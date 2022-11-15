@@ -1,0 +1,52 @@
+---
+// export interface Props {
+// 	title: string;
+// 	body: string;
+// 	href: string;
+// }
+
+// const { href, title, body } = Astro.props;
+---
+<script>
+
+
+</script>
+<div class="quiz-section">
+	<h1>Round <span data-name="round-number"></span></h1>
+	<div class="audio-container">
+		<button class="play-button">Play</button>
+		<button class="play-button" disabled>Play</button>
+		<button class="play-button" disabled>Play</button>
+		<audio src="" class="audio-element"></audio>
+	</div>
+	<form class="answer-form">
+		<fieldset>
+			<legend>Your answer?</legend>
+		
+			<label>
+				<input type="radio" name="answer" value="" class="answer-option">
+			  <span class="song-name"></span>
+			</label>
+			<label>
+  		 		<input type="radio" name="answer" value="" class="answer-option">
+			  <span class="song-name"></span>
+			</label>
+			<label>
+  		 		<input type="radio" name="answer" value="" class="answer-option">
+			  <span class="song-name"></span>
+			</label>
+			<label>
+  		 		<input type="radio" name="answer" value="" class="answer-option">
+			  <span class="song-name"></span>
+			</label>
+		</fieldset>
+		<button disabled class="answer-button">Final answer</button>
+		
+	</form>
+</div>
+
+<style>
+	.quiz-section{
+		display: none;
+	}
+</style>

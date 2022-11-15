@@ -1,0 +1,26 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Login from '../components/Login.astro';
+// import { log } from 'astro/dist/core/logger/core';
+import Artists from "../components/Artists.astro" 
+import Difficulty from '../components/Difficulty.astro';
+import Quiz from '../components/Quiz.astro';
+import Result from '../components/Result.astro';
+---
+
+<Layout title="Welcome to Astro.">
+	<main>
+		<Login
+		href="https://docs.astro.build/"
+		title="Documentation"
+		/>
+		<Artists></Artists>
+		<Difficulty></Difficulty>
+		<Quiz></Quiz>
+		<Result></Result>
+	</main>
+</Layout>
+
+<style>
+
+</style>

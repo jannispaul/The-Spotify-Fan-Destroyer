@@ -1,0 +1,41 @@
+---
+export interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		<script src="/app.js" defer is:inline></script>
+
+	</head>
+	<body>
+		<slot />
+	</body>
+</html>
+<style is:global>
+	:root {
+		--accent: 124, 58, 237;
+		--white:#fff;
+	}
+	html {
+		font-family: system-ui, Arial, Helvetica, sans-serif;
+		background: radial-gradient(50% 50% at 50% 50%, #1D1D1D 0%, #0B0B0B 100%) 100%;
+		min-height: 100vh;
+	}
+	body,h1,h2,h3,p,a, label{
+		color: var(--white);
+	}
+
+	.artist-button > img {
+		pointer-events: none;
+	}
+	</style>
