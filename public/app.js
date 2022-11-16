@@ -130,7 +130,7 @@ const fetchTopTracks = async (id, callback) => {
 
 // Get artists albums
 async function fetchAlbums(id, callback) {
-  console.log("fetch albums");
+  // console.log("fetch albums");
   const endpoint = `https://api.spotify.com/v1/artists/${id}/albums`;
   fetchJSONFromSpotify(endpoint, accessToken).then((JSON) => {
     console.log("albums", JSON.items);
@@ -140,7 +140,7 @@ async function fetchAlbums(id, callback) {
 }
 
 async function iterateOverAlbumsArray(albumsArray) {
-  console.log("iterating over albums");
+  // console.log("iterating over albums");
   albumsArray.forEach((album) => {
     // console.log(album.images[0].url);
     // console.log("before fetch songs of album");
@@ -237,11 +237,9 @@ function showQuiz(params) {
     setAudioSource();
     createAnswers();
     resetRadioButtons();
-    if (currentRound === numberOfRounds - 1) {
-      nextButton.textContent = "Finish";
-    }
     showSection(".quiz-section");
   } else {
+    nextButton.textContent = "Continue";
     showEndResult();
   }
 }
@@ -285,7 +283,7 @@ function createAnswers() {
   let answers = shuffle([...otherTracks]).slice(0, 4);
   // Select random track and replace it with the right answer
   answers[getRandomInt(4)] = trackList[currentRound];
-  console.log(answers);
+  // console.log(answers);
   songNames.forEach(
     (el, index) => {
       el.textContent = answers[index].name;
@@ -334,6 +332,9 @@ function showResult(params) {
   hideSection(".quiz-section");
   showSection(".result-section");
   currentRound++;
+  currentRound === numberOfRounds
+    ? (nextButton.textContent = "Finish")
+    : (nextButton.textContent = "Continue");
 }
 function resetQuiz(params) {
   currentRound = 0;
@@ -366,6 +367,7 @@ window.addEventListener(
     if (event.target.matches(".difficulty-button")) {
       createTrackList();
       duration = event.target.dataset.length;
+      event.target.blur();
       showQuiz();
     }
     // Playback the audio snippet
@@ -382,10 +384,14 @@ window.addEventListener(
       event.preventDefault();
       checkAnswers();
       showResult();
+      answerButton.removeAttribute("disabled");
+      answerButton.setAttribute("disabled", "");
     }
     // Go to next Round
     if (event.target.matches(".next-button")) {
-      answerButton.setAttribute("disabled", "");
+      // answerButton.setAttribute("disabled", "");
+      // nextButton.setAttribute("disabled", "");
+      event.target.blur();
       showQuiz();
     }
     // Restart quiz
@@ -395,7 +401,7 @@ window.addEventListener(
     ) {
       resetQuiz();
     }
-    // console.log(event);
+    console.log(event);
   },
   true
 );
