@@ -16,10 +16,10 @@ In order to run this project locally you need to:
 
 - clone the repository (and open it)
 - `pnpm install`
-- create an app in the spotify developer dashboard with that same redirectUri
+- create an app in the spotify developer dashboard and set your redirectUri to http://localhost:3000
   https://developer.spotify.com/dashboard/applications
   https://developer.spotify.com/documentation/general/guides/authorization/app-settings/
-- change the variable redirectUri to your servers URI
+- change the variable redirectUri to http://localhost:3000
 - change the variable clientId to the one provided in your spotify app in the developer dashboard
 - `pnpm run dev`
 
