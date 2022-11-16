@@ -22,14 +22,15 @@ let songTitle = document.querySelector(".song-title");
 const artistName = document.querySelector("[data-name='artist']");
 let finalMessage = document.querySelector(".final-message");
 let finalScore = document.querySelector(".final-score");
+let nextButton = document.querySelector(".next-button");
 
 // Utility functions
 function hideSection(element) {
-  console.log("hiding", element);
+  // console.log("hiding", element);
   document.querySelector(element).style.display = "none";
 }
 function showSection(element) {
-  console.log("showing", element);
+  // console.log("showing", element);
   document.querySelector(element).style.display = "block";
 }
 
@@ -236,6 +237,9 @@ function showQuiz(params) {
     setAudioSource();
     createAnswers();
     resetRadioButtons();
+    if (currentRound === numberOfRounds - 1) {
+      nextButton.textContent = "Finish";
+    }
     showSection(".quiz-section");
   } else {
     showEndResult();
@@ -391,7 +395,7 @@ window.addEventListener(
     ) {
       resetQuiz();
     }
-    console.log(event);
+    // console.log(event);
   },
   true
 );
