@@ -1,11 +1,16 @@
+// Variables for quiz
 let accessToken;
-let artistsContainer = document.querySelector(".artists-container");
+const numberOfRounds = 5;
 let trackList;
+let allTracks = [];
 let currentRound = 0;
 let correctAnswers = [];
 let selectedArtist;
 let favoriteArtists;
 let duration;
+
+// HTML elements
+let artistsContainer = document.querySelector(".artists-container");
 let audioElement = document.querySelector(".audio-element");
 let songNames = document.querySelectorAll(".song-name");
 let answerOptions = document.querySelectorAll(".answer-option");
@@ -17,8 +22,8 @@ let songTitle = document.querySelector(".song-title");
 const artistName = document.querySelector("[data-name='artist']");
 let finalMessage = document.querySelector(".final-message");
 let finalScore = document.querySelector(".final-score");
-const numberOfRounds = 5;
 
+// Utility functions
 function hideSection(element) {
   console.log("hiding", element);
   document.querySelector(element).style.display = "none";
@@ -27,12 +32,26 @@ function showSection(element) {
   console.log("showing", element);
   document.querySelector(element).style.display = "block";
 }
+
+/**
+ * Convert a template string into HTML DOM nodes
+ * @param  {String} str The template string
+ * @return {Node}       The template HTML
+ * Function from https://gomakethings.com/converting-a-string-into-markup-with-vanilla-js/
+ */
+let stringToHTML = function (str) {
+  let parser = new DOMParser();
+  let doc = parser.parseFromString(str, "text/html");
+  return doc.body;
+};
+
+// Authorization
 function setAccessToken() {
   let urlParams = new URLSearchParams(window.location.hash.replace("#", "?"));
   accessToken = urlParams.get("access_token");
 }
 function authorize() {
-  console.log("hi");
+  // console.log("authorizing")
   const clientId = "e69bbbb55e4748a5a304e7bf114b23ef"; // Change this to your apps clientID
   const redirectUri = "http://localhost:3000/"; // Change this to your URI
   const scope = "user-top-read";
@@ -47,15 +66,11 @@ function authorize() {
 
 setAccessToken();
 if (accessToken) {
-  console.log("accessToken set", accessToken);
+  // console.log("accessToken set", accessToken);
   hideSection(".login-section");
   showFavoriteArtists();
   showSection(".artist-section");
 }
-// Get accessToken and set it
-// function setAccessToken() {
-//   return accessToken;
-// }
 
 // Fetch JSON from Spotify
 async function fetchJSONFromSpotify(endpoint) {
@@ -68,26 +83,26 @@ async function fetchJSONFromSpotify(endpoint) {
     redirect: "follow",
   };
   const response = await fetch(endpoint, requestOptions);
-
   if (!response.ok) {
-    const message = `An error has occured: ${response.status}`;
+    showSection(".login-section");
+    hideSection(".artist-section");
+    const message = `An error has occured: ${response.status}. Your access token is propably expired`;
     throw new Error(message);
   }
 
   let json = await response.json();
   return json;
 }
-/**
- * Convert a template string into HTML DOM nodes
- * @param  {String} str The template string
- * @return {Node}       The template HTML
- * Function from https://gomakethings.com/converting-a-string-into-markup-with-vanilla-js/
- */
-var stringToHTML = function (str) {
-  var parser = new DOMParser();
-  var doc = parser.parseFromString(str, "text/html");
-  return doc.body;
-};
+
+// Get users favorite artits
+function fetchFavoriteArtists(callback) {
+  const endpoint = `https://api.spotify.com/v1/me/top/artists`;
+  fetchJSONFromSpotify(endpoint, accessToken).then((favoritesJSON) => {
+    // console.log(favoritesJSON.items);
+    callback(favoritesJSON);
+    favoriteArtists = favoritesJSON.items;
+  });
+}
 
 // Show artists on page
 function showArtists(artistsArray) {
@@ -99,28 +114,60 @@ function showArtists(artistsArray) {
   });
 }
 
-// Get favorites
-function fetchFavorites(type, callback) {
-  const endpoint = `https://api.spotify.com/v1/me/top/${type}`;
-  fetchJSONFromSpotify(endpoint, accessToken).then((favoritesJSON) => {
-    callback(favoritesJSON);
-    favoriteArtists = favoritesJSON.items;
-    // console.log(favoritesJSON.items);
-  });
-}
-
 // Fetch favorite Artists and show their songs on page
 function showFavoriteArtists() {
-  fetchFavorites("artists", showArtists);
+  fetchFavoriteArtists(showArtists);
 }
 
 // Get artists most popular tracks
-function fetchTopTracks(id, callback) {
+const fetchTopTracks = async (id, callback) => {
   const endpoint = `https://api.spotify.com/v1/artists/${id}/top-tracks?market=US`;
   fetchJSONFromSpotify(endpoint, accessToken).then((JSON) => {
     callback(JSON.tracks);
   });
+};
+
+// Get artists albums
+async function fetchAlbums(id, callback) {
+  console.log("fetch albums");
+  const endpoint = `https://api.spotify.com/v1/artists/${id}/albums`;
+  fetchJSONFromSpotify(endpoint, accessToken).then((JSON) => {
+    console.log("albums", JSON.items);
+    callback(JSON.items);
+    // console.log("done with albums");
+  });
 }
+
+async function iterateOverAlbumsArray(albumsArray) {
+  console.log("iterating over albums");
+  albumsArray.forEach((album) => {
+    // console.log(album.images[0].url);
+    // console.log("before fetch songs of album");
+    fetchSongsOfAlbum(album.id, album.images[0].url, addTracks);
+  });
+}
+
+// Fetch all song from the album, push them to allTracks, ad album cover to track
+function fetchSongsOfAlbum(id, coverURL, callback) {
+  // console.log("fetch songs of album");
+  const endpoint = `https://api.spotify.com/v1/albums/${id}/tracks`;
+  fetchJSONFromSpotify(endpoint, accessToken).then((JSON) => {
+    JSON.items.forEach((el) => {
+      // console.log("song", el);
+      allTracks.push(el);
+      allTracks[allTracks.length - 1].album = { images: [{ url: coverURL }] };
+      // console.log(allTracks);
+    });
+    // console.log("songsofalbum", JSON);
+    // callback(JSON.items);
+  });
+}
+async function addTracks(trackArray) {
+  // console.log("allTracks", allTracks);
+  allTracks.push(...trackArray);
+  console.log("allTracksAdded", allTracks);
+}
+
 // Randomly shuffle fisher yates algorithm
 // Code from: https://javascript.info/array-methods#shuffle-an-array
 function shuffle(array) {
@@ -131,15 +178,36 @@ function shuffle(array) {
   return array;
 }
 
+function getTracks(id) {
+  fetchTopTracks(id, addTracks);
+  fetchAlbums(id, iterateOverAlbumsArray);
+}
+
 // Create Quiz object
-function createtrackList(trackArray) {
-  // console.log("sorted", trackArray);
+function createTrackList() {
+  const allTracksFromArtist = allTracks.filter((track) =>
+    track.artists.some((artist) => artist.id === selectedArtist.id)
+  );
+
+  // Filter array for object property duplciates
+  // Code from: https://dev.to/marinamosti/removing-duplicates-in-an-array-of-objects-in-js-with-sets-3fep#comment-8hdm
+  const checked = new Set();
+  const allTracksWithoutDuplicates = allTracksFromArtist.filter((el) => {
+    const duplicate = checked.has(el.name);
+    checked.add(el.name);
+    return !duplicate;
+  });
+
   // Shuffle array
-  const shuffled = shuffle([...trackArray]);
+  const shuffled = shuffle([...allTracksWithoutDuplicates]);
 
   // Get sub-array of first n elements after shuffled
   trackList = shuffled.slice(0, numberOfRounds);
-  // console.log("random", trackList);
+
+  // console.log("alltracks", allTracks);
+  // console.log("alltracksFromArtist", allTracksFromArtist);
+  // console.log("Alltracks-Noduplicates", allTracksWithoutDuplicates);
+  // console.log("tracklist", trackList);
 }
 
 // Show difficulty section
@@ -205,7 +273,7 @@ function getRandomInt(max) {
 // Populate possible answers
 function createAnswers() {
   // All tracks other than the current one
-  let otherTracks = trackList.filter(
+  let otherTracks = allTracks.filter(
     (track) => track.name !== trackList[currentRound].name
   );
   // console.log(otherTracks, trackList, trackList[currentRound]);
@@ -226,6 +294,7 @@ function createAnswers() {
 
 // Set audio source
 function setAudioSource() {
+  // console.log("tracklist", trackList);
   audioElement.src = trackList[currentRound].preview_url; // Set resource to our URL
 }
 
@@ -265,6 +334,7 @@ function showResult(params) {
 function resetQuiz(params) {
   currentRound = 0;
   trackList.length = 0;
+  allTracks.length = 0;
   correctAnswers.length = 0;
   hideSection(".quiz-section");
   hideSection(".result-section");
@@ -283,14 +353,14 @@ window.addEventListener(
     }
     // Select an artist
     if (event.target.matches(".artist-button")) {
-      // console.log("clicked");
-      // // console.log(event.target.dataset.id);
+      // console.log(event.target.dataset.id);
       selectArtist(event.target.dataset.id);
-      fetchTopTracks(event.target.dataset.id, createtrackList);
+      getTracks(event.target.dataset.id);
       showDifficulty();
     }
     // Select a difficulty
     if (event.target.matches(".difficulty-button")) {
+      createTrackList();
       duration = event.target.dataset.length;
       showQuiz();
     }
@@ -311,6 +381,7 @@ window.addEventListener(
     }
     // Go to next Round
     if (event.target.matches(".next-button")) {
+      answerButton.setAttribute("disabled", "");
       showQuiz();
     }
     // Restart quiz
