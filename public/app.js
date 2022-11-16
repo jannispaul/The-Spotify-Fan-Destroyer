@@ -43,7 +43,8 @@ function showSection(element) {
 function stringToHTML(str) {
   let parser = new DOMParser();
   let doc = parser.parseFromString(str, "text/html");
-  return doc.body;
+  // console.log(doc.body.children);
+  return doc.body.children[0];
 }
 
 // Authorization
