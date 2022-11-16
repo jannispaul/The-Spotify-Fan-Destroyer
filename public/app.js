@@ -14,8 +14,10 @@ let answerForm = document.querySelector(".answer-form");
 let message = document.querySelector(".message");
 let songCover = document.querySelector(".song-cover");
 let songTitle = document.querySelector(".song-title");
-
 const artistName = document.querySelector("[data-name='artist']");
+let finalMessage = document.querySelector(".final-message");
+let finalScore = document.querySelector(".final-score");
+const numberOfRounds = 5;
 
 function hideSection(element) {
   console.log("hiding", element);
@@ -135,7 +137,6 @@ function createtrackList(trackArray) {
   // Shuffle array
   const shuffled = shuffle([...trackArray]);
 
-  const numberOfRounds = 10;
   // Get sub-array of first n elements after shuffled
   trackList = shuffled.slice(0, numberOfRounds);
   // console.log("random", trackList);
@@ -161,17 +162,40 @@ function selectArtist(id) {
 
 // Show the quiz
 function showQuiz(params) {
+  if (currentRound < numberOfRounds) {
+    hideSection(".result-section");
+    hideSection(".difficulty-section");
+    setAudioSource();
+    createAnswers();
+    resetRadioButtons();
+    showSection(".quiz-section");
+  } else {
+    showEndResult();
+  }
+}
+// Show the end result
+function showEndResult() {
+  let score = correctAnswers.filter((value) => value === true).length;
+  finalScore.innerText = `You guessed ${score}/${trackList.length} correctly`;
+  const finalMessages = [
+    "You are a terrible fan",
+    "You call that fandom?",
+    "Do you know what a fan is?",
+    "You are a great fan – kinda",
+    "Not too bad of a fan",
+    "I’ll take it back. You’re a true fan.",
+  ];
+  let messageIndex =
+    Math.floor((score / trackList.length) * finalMessages.length) - 1;
+  console.log("messageIndex", messageIndex);
+  finalMessage.innerText = finalMessages[messageIndex];
   hideSection(".result-section");
-  hideSection(".difficulty-section");
-  setAudioSource();
-  createAnswers();
-  resetRadioButtons();
-  showSection(".quiz-section");
+  showSection(".end-section");
 }
 
 //Reset radio buttons
 function resetRadioButtons() {
-  answerOptions.forEach((el) => el.removeAttribute("checked"));
+  answerOptions.forEach((el) => (el.checked = false));
 }
 
 function getRandomInt(max) {
@@ -189,6 +213,7 @@ function createAnswers() {
   let answers = shuffle([...otherTracks]).slice(0, 4);
   // Select random track and replace it with the right answer
   answers[getRandomInt(4)] = trackList[currentRound];
+  console.log(answers);
   songNames.forEach(
     (el, index) => {
       el.textContent = answers[index].name;
@@ -237,6 +262,16 @@ function showResult(params) {
   showSection(".result-section");
   currentRound++;
 }
+function resetQuiz(params) {
+  currentRound = 0;
+  trackList.length = 0;
+  correctAnswers.length = 0;
+  hideSection(".quiz-section");
+  hideSection(".result-section");
+  hideSection(".end-section");
+  hideSection(".difficulty-section");
+  showSection(".artist-section");
+}
 
 // Event listener with delegation
 window.addEventListener(
@@ -278,7 +313,13 @@ window.addEventListener(
     if (event.target.matches(".next-button")) {
       showQuiz();
     }
-
+    // Restart quiz
+    if (
+      event.target.matches(".restart-button") ||
+      event.target.matches(".reset-button")
+    ) {
+      resetQuiz();
+    }
     console.log(event);
   },
   true
