@@ -40,11 +40,11 @@ function showSection(element) {
  * @return {Node}       The template HTML
  * Function from https://gomakethings.com/converting-a-string-into-markup-with-vanilla-js/
  */
-let stringToHTML = function (str) {
+function stringToHTML(str) {
   let parser = new DOMParser();
   let doc = parser.parseFromString(str, "text/html");
   return doc.body;
-};
+}
 
 // Authorization
 function setAccessToken() {
@@ -66,10 +66,12 @@ function authorize() {
 }
 
 setAccessToken();
+
+// If accessToken exists continue to artist selection
 if (accessToken) {
   // console.log("accessToken set", accessToken);
   hideSection(".login-section");
-  showFavoriteArtists();
+  fetchFavoriteArtists(showArtists);
   showSection(".artist-section");
 }
 
@@ -113,11 +115,6 @@ function showArtists(artistsArray) {
     artistsContainer.appendChild(stringToHTML(htmlString));
     // console.log(el);
   });
-}
-
-// Fetch favorite Artists and show their songs on page
-function showFavoriteArtists() {
-  fetchFavoriteArtists(showArtists);
 }
 
 // Get artists most popular tracks
