@@ -112,7 +112,7 @@ function fetchFavoriteArtists(callback) {
 function showArtists(artistsArray) {
   // console.log("artists", artistsArray);
   artistsArray.items.forEach((el) => {
-    let htmlString = `<button class="artist-button" data-id="${el.id}"><img src="${el.images[1].url}" alt="Artist image of ${el.name}"/>${el.name}</button>`;
+    let htmlString = `<button class="artist-button selector" data-id="${el.id}"><img src="${el.images[1].url}" alt="Artist image of ${el.name}"/>${el.name}</button>`;
     artistsContainer.appendChild(stringToHTML(htmlString));
     // console.log(el);
   });
