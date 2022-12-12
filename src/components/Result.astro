@@ -1,15 +1,58 @@
 
 <div class="result-section">
-	<h1 class="message">You were right</h1>
-	<div class="song-card">
-		<img src="" class="song-cover" />
-		<span class="song-title"></span>
+	<div class="result-wrapper">
+		<h1 class="message">You were right</h1>
+		<div class="song-card">
+			<img src="" class="song-cover" />
+			<p class="song-title" data-title="song-title"></p>
+		</div>
+		<button class="next-button">
+			<span class="next-text">
+				Next round
+			</span>
+			<svg width="100%" height="100%" class="icon large" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M4 11H16.17L10.58 5.41L12 4L20 12L12 20L10.59 18.59L16.17 13H4V11Z" fill="#181818"/>
+			</svg>					
+		</button> 
 	</div>
-	<button class="next-button">Next round</button> 
 </div>
 
 <style>
 .result-section {
 	display: none;
 }	
+.result-wrapper{
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	align-items: center;
+	gap: 5rem;
+}
+.song-card{
+	padding: 1.5rem;
+	border-radius: 1.25rem;
+	border: 1px solid var(--black-selected);
+	width: 16rem;
+	display: flex;
+	flex-direction: column;
+	gap: 1.25rem;
+	background: var(--black);
+	max-width: 100%;
+	position: relative;
+}
+.song-cover{
+	max-width: 100%;
+	border-radius: 0.375rem;
+	overflow: hidden;
+}
+.song-card.correct{
+	box-shadow: 0px 0px 250px 0px rgba(0, 189, 0, 0.15);
+}
+
+.song-card.incorrect{
+	box-shadow: 0px 0px 250px 0px rgba(239, 0, 0, 0.15);
+}
+.next-text{
+	pointer-events: none;
+}
 </style>

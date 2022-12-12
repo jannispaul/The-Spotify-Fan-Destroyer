@@ -13,7 +13,6 @@
 </script>
 <div class="quiz-section">
 	<div class="quiz-wrapper">
-
 		<h1>Round <span data-name="round-number"></span></h1>
 		<div class="audio-container">
 			<button class="play-button">Play</button>
@@ -50,8 +49,12 @@
 					</label>
 				</div>
 			</div>
-		</fieldset>
-		<button disabled class="answer-button">Final answer</button>
+			</fieldset>
+			<button disabled class="answer-button">Final answer 
+				<svg width="100%" height="100%" class="icon large" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M4 11H16.17L10.58 5.41L12 4L20 12L12 20L10.59 18.59L16.17 13H4V11Z" fill="#181818"/>
+				</svg>
+			</button>
 		</form>
 	</div>
 </div>
@@ -110,6 +113,7 @@
 		opacity: 0;
 		left: 0;
 		top: 0;
+		cursor: pointer;
 	}
 	label.selector{
 		background: var(--black);
@@ -121,10 +125,9 @@
 		height: 3rem;
 		align-items: center;
 		justify-content: center;
-		
 	}
 	
-	label.selector:hover{
+	input[type="radio"]:hover+label{
 		background: var(--black-hover);
 		border-color: #949494;
 	}

@@ -17,12 +17,14 @@ let answerOptions = document.querySelectorAll(".answer-option");
 let answerButton = document.querySelector(".answer-button");
 let answerForm = document.querySelector(".answer-form");
 let message = document.querySelector(".message");
+let songCard = document.querySelector(".song-card");
 let songCover = document.querySelector(".song-cover");
 let songTitle = document.querySelector(".song-title");
 const artistName = document.querySelector("[data-name='artist']");
 let finalMessage = document.querySelector(".final-message");
 let finalScore = document.querySelector(".final-score");
 let nextButton = document.querySelector(".next-button");
+let nextText = document.querySelector(".next-text");
 
 // Utility functions
 function hideSection(element) {
@@ -237,7 +239,7 @@ function showQuiz(params) {
     resetRadioButtons();
     showSection(".quiz-section");
   } else {
-    nextButton.textContent = "Continue";
+    nextText.innerText = "Continue";
     showEndResult();
   }
 }
@@ -322,17 +324,23 @@ function checkAnswers(params) {
 // Show result
 function showResult(params) {
   console.log(trackList[currentRound]);
-  correctAnswers[currentRound]
-    ? (message.innerText = "You were right")
-    : (message.innerText = "You were wrong ");
+  if (correctAnswers[currentRound]) {
+    message.innerText = "You were right";
+    songCard.classList.remove("incorrect");
+    songCard.classList.add("correct");
+  } else {
+    message.innerText = "You were wrong ";
+    songCard.classList.remove("correct");
+    songCard.classList.add("incorrect");
+  }
   songCover.setAttribute("src", trackList[currentRound].album.images[0].url);
   songTitle.innerText = trackList[currentRound].name;
   hideSection(".quiz-section");
   showSection(".result-section");
   currentRound++;
   currentRound === numberOfRounds
-    ? (nextButton.textContent = "Finish")
-    : (nextButton.textContent = "Continue");
+    ? (nextText.textContent = "Finish")
+    : (nextText.textContent = "Continue");
 }
 function resetQuiz(params) {
   currentRound = 0;
