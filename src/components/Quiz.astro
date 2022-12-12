@@ -12,30 +12,32 @@
 
 </script>
 <div class="quiz-section">
-	<h1>Round <span data-name="round-number"></span></h1>
-	<div class="audio-container">
-		<button class="play-button">Play</button>
-		<button class="play-button" disabled>Play</button>
-		<button class="play-button" disabled>Play</button>
-		<audio src="" class="audio-element"></audio>
-	</div>
-	<form class="answer-form">
-		<fieldset>
-			<legend>Your answer?</legend>
-			<div class="answers">
-				<div class="answer-wrapper">
-					<input type="radio" name="answer" value="" class="answer-option">
-					<label class="selector">
-						<span class="song-name"></span>
-					</label>
-				</div>
-				<div class="answer-wrapper">
-					<input type="radio" name="answer" value="" class="answer-option">
-					<label class="selector">
-						<span class="song-name"></span>
-					</label>
-				</div>
-				<div class="answer-wrapper">
+	<div class="quiz-wrapper">
+
+		<h1>Round <span data-name="round-number"></span></h1>
+		<div class="audio-container">
+			<button class="play-button">Play</button>
+			<button class="play-button" disabled>Play</button>
+			<button class="play-button" disabled>Play</button>
+			<audio src="" class="audio-element"></audio>
+		</div>
+		<form class="answer-form">
+			<fieldset>
+				<legend>Your answer?</legend>
+				<div class="answers">
+					<div class="answer-wrapper">
+						<input type="radio" name="answer" value="" class="answer-option">
+						<label class="selector">
+							<span class="song-name"></span>
+						</label>
+					</div>
+					<div class="answer-wrapper">
+						<input type="radio" name="answer" value="" class="answer-option">
+						<label class="selector">
+							<span class="song-name"></span>
+						</label>
+					</div>
+					<div class="answer-wrapper">
 					<input type="radio" name="answer" value="" class="answer-option">
 					<label class="selector">
 						<span class="song-name"></span>
@@ -50,13 +52,32 @@
 			</div>
 		</fieldset>
 		<button disabled class="answer-button">Final answer</button>
-		
-	</form>
+		</form>
+	</div>
 </div>
 
 <style>
 	.quiz-section{
 		display: none;
+	}
+	.quiz-wrapper{
+		background: var(--black);
+		border: 2px solid var(--black-selected);
+		border-radius: 1.25rem;
+	}
+
+	.audio-container{
+		display: flex;
+		gap: 1rem;
+		justify-content: center;
+		margin-bottom: 3rem;
+	}
+	.answer-form{
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1rem;
+		width: 100%;
 	}
 	.song-name{
 		display: block;
@@ -67,6 +88,12 @@
 	}
 	fieldset{
 		border:none;
+		width: 100%;
+	}
+	legend {
+		font-size: 2rem;
+		font-weight: 700;
+		margin-bottom: 1rem;
 	}
 	.answers{
 		display: grid;
@@ -94,7 +121,7 @@
 		height: 3rem;
 		align-items: center;
 		justify-content: center;
-
+		
 	}
 	
 	label.selector:hover{
@@ -108,13 +135,18 @@
 		border-color: var(--primary);
 		outline: -webkit-focus-ring-color auto 0px!important;
 	}
-
+	
 	@media (min-width: 768px){
 		.answers{
 			grid-template-columns: 1fr 1fr;
 		}
 		label.selector{
 			height: 4rem;
+			font-size: 1.25rem;
+			font-weight: 700;
+		}
+		.quiz-wrapper{
+			padding: 3rem;
 		}
 	}
 </style>

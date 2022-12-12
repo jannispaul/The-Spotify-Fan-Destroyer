@@ -57,10 +57,11 @@
 		height: 4rem;
 	}
 	img.artist-preview-image{
-		width: 2rem;
-		height: 2rem;
+		max-width: 2rem;
+		max-height: 2rem;
 		border-radius: 99rem;
-		margin-right: 1rem
+		margin-right: 1rem;
+		overflow: hidden;
 	}
 	@media (min-width: 768px){
 		.difficulty-wrapper {
@@ -75,8 +76,8 @@
 		}
 		
 		img.artist-preview-image{
-			width: 4rem;
-			height: 4rem;
+			max-width: 4rem;
+			max-height: 4rem;
 		}
 	}
 </style>
