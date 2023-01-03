@@ -13,8 +13,9 @@
 </script>
 <div class="artist-section">
 	<div class="artist-wrapper">
+		<span class="header-emoji">🤨</span>
 		<h1>How big of a fan <br><span>are you really?</span></h1>
-		<input type="text" class="search"/>
+		<input type="text" class="search" autofocus/>
 		<div class="artists-container"></div>
 	</div>
 </div>
@@ -28,6 +29,7 @@
 		flex-direction: column;
 		align-items: center;
 		padding-top: 4rem;
+		padding: 4rem 2rem 0;
 	}
 	.artists-container{
 		display: grid;
@@ -65,7 +67,7 @@
 		
 	}
 	input.search:focus{
-		outline: -webkit-focus-ring-color auto 0px!important;
+		/* outline: -webkit-focus-ring-color auto 0px!important; */
 		outline: none;
 		/* outline: 2px auto red; */
 		border: 2px solid var(--primary);

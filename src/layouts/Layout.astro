@@ -31,6 +31,7 @@ const { title } = Astro.props;
 	</body>
 </html>
 <style is:global>
+	/* General styles*/
 	*{
 		padding: 0;
 		margin:0;
@@ -96,7 +97,7 @@ const { title } = Astro.props;
 		pointer-events: none;
 	}
 
-
+	/* Buttons */
 	
 	button{
 		font-size: 1rem;
@@ -146,7 +147,8 @@ const { title } = Astro.props;
 	button.selector:focus{
 		background: var(--black-selected);
 		border-color: var(--primary);
-		outline: -webkit-focus-ring-color auto 0px!important;
+		/* outline: -webkit-focus-ring-color auto 0px!important; */
+		outline: none;
 	}
 	button.artist-button img{
 		width: 3rem;
@@ -155,6 +157,8 @@ const { title } = Astro.props;
 		border-radius: 99rem;
 
 	}
+
+	/* Result */
 	.song-card::after{
 		position: absolute;
 		font-size: 3rem;
@@ -162,11 +166,16 @@ const { title } = Astro.props;
 		right: -1rem;
 		transform: rotateZ(10deg);
 	}
+
 	.correct::after{
 		content: "✅";
 	}
 	.incorrect::after{
 		content: "❌";
+	}
+	/* emoji heading */
+	.header-emoji {
+		font-size: 3rem;
 	}
 
 	@media (min-width: 768px){
