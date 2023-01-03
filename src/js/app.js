@@ -5,7 +5,7 @@ let trackList;
 let allTracks = [];
 let currentRound = 0;
 let correctAnswers = [];
-let selectedArtist;
+let selectedArtist = { id: "", name: "" };
 let favoriteArtists;
 let duration;
 
@@ -272,12 +272,11 @@ function setArtistImage(source) {
 }
 
 // Select artist
-// function selectArtist(name) {
-//   // console.log("id:", id, "artists:", favoriteArtists);
-//   // selectedArtist = favoriteArtists.filter((artist) => artist.id === id)[0];
-//   // console.log("selectedArtist", selectedArtist.name);
-//   setArtistName(name);
-// }
+function selectArtist(id, name) {
+  // console.log("id:", id);
+  selectedArtist.id = id;
+  selectedArtist.name = name;
+}
 
 // Show the quiz
 function showQuiz(params) {
@@ -420,6 +419,7 @@ window.addEventListener(
     // Select an artist
     if (event.target.matches(".artist-button")) {
       // console.log(event.target.dataset.id);
+      selectArtist(event.target.dataset.id, event.target.dataset.name);
       setArtistName(event.target.dataset.name);
       setArtistImage(event.target.childNodes[0].src);
       fetchTracks(event.target.dataset.id);

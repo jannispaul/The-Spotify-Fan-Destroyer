@@ -5,21 +5,24 @@
 		<p class="intro-p">Find out by listening to a short snippet and try to identify the song.</p>
 		<div class="difficulty-container">
 			<button data-length="5" class="difficulty-button selector">
-				<img src="/easy.png" alt="Emoji" class="emoji">			
+				<!-- <img src="/easy.png" alt="Emoji" class="difficulty-emoji">			 -->
+				<span class="difficulty-emoji">🐥</span>
 				<div>
 					Kind of a fan
 					<span>5 seconds of playback</span>
 				</div>
 			</button>
 			<button data-length="3" class="difficulty-button selector">
-				<img src="/medium.png" alt="Emoji" class="emoji">			
+				<!-- <img src="/medium.png" alt="Emoji" class="difficulty-emoji">			 -->
+				<span class="difficulty-emoji">😎</span>
 				<div>
 					Real fan
 					<span>3 seconds of playback</span>
 				</div>
 			</button>
 			<button data-length="1" class="difficulty-button selector">
-				<img src="/hard.png" alt="Emoji" class="emoji">			
+				<!-- <img src="/hard.png" alt="Emoji" class="difficulty-emoji">			 -->
+				<span class="difficulty-emoji">🤘</span>
 				<div>
 					Hardcore fan
 					<span>2 seconds of playback</span>
@@ -55,9 +58,14 @@
 		opacity: 0.7;
 
 	}
-	img.emoji{
-		width: 4rem;
-		height: 4rem;
+	.difficulty-button{
+		padding: 1rem;
+		text-align: left;
+	}
+	.difficulty-emoji{
+		font-size: 2.5rem;
+		width: 2.5rem;
+		height: 2.5rem;
 	}
 	img.artist-preview-image{
 		max-width: 2rem;
@@ -66,16 +74,27 @@
 		margin-right: 1rem;
 		overflow: hidden;
 	}
+	
+	/* Desktop styles*/
 	@media (min-width: 768px){
 		.difficulty-wrapper {
 			min-height: 100vh;
 			display: flex;
-			place-content: center;
+			place-content: center center;
 			flex-direction: column;
 			margin-top: -10vh;
 		}
 		.difficulty-container{
 			grid-template-columns: repeat(3, 1fr);
+		}
+		
+		.difficulty-button{
+			text-align: center;
+		}
+		.difficulty-emoji{
+			font-size: 3.75rem;
+			width: 4rem;
+			height: 4rem;
 		}
 		
 		img.artist-preview-image{
