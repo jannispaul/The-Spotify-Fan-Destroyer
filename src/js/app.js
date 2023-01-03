@@ -29,6 +29,7 @@ let nextText = document.querySelector(".next-text");
 let artistSearchInput = document.querySelector("input.search");
 let artistPreviewImage = document.querySelector(".artist-preview-image");
 let playButtons = document.querySelectorAll(".play-button");
+let playBacksLeftIndicator = document.querySelector(".playbacks-left");
 
 // Utility functions
 function hideSection(element) {
@@ -389,6 +390,7 @@ function disablePlayButton() {
   </svg>
   `;
   playbacksUsed++;
+  playBacksLeftIndicator.innerText = 3 - playbacksUsed;
   playButtons[playbacksUsed]?.toggleAttribute("disabled");
 }
 // Write percentage of audio snippet that has played into style as custom css prop --percentage
@@ -401,6 +403,7 @@ function updatePlayPosition(percentage) {
 function resetPlayButtons() {
   // reset play back count
   playbacksUsed = 0;
+  playBacksLeftIndicator.innerText = 3;
   // Reset icon and disabled
   playButtons.forEach((el, index) => {
     el.innerHTML = `<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="pointer-events:none;">
