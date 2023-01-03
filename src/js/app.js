@@ -48,6 +48,10 @@ function stringToHTML(str) {
   // console.log(doc.body.children);
   return doc.body.children[0];
 }
+console.log("log;", import.meta.env.MODE);
+console.log("log;", import.meta.env.DEV);
+console.log("log;", import.meta.env.PUBLIC_CLIENT_ID);
+console.log("log;", import.meta.env.BASE_URL);
 
 // Authorization
 function setAccessToken() {
@@ -57,9 +61,9 @@ function setAccessToken() {
 function authorize() {
   // console.log("authorizing")
   // const clientId = "e69bbbb55e4748a5a304e7bf114b23ef"; // Change this to your apps clientID
-  const clientId = import.meta.env.CLIENT_ID; // Change this to your apps clientID
   // const redirectUri = "http://localhost:3000/"; // Change this to your URI
-  const redirectUri = REDIRECT_URI; // Change this to your URI
+  const clientId = import.meta.env.PUBLIC_CLIENT_ID; // Change this to your apps clientID
+  const redirectUri = import.meta.env.PUBLIC_REDIRECT_URI; // Change this to your URI
   const scope = "user-top-read";
   let url = "https://accounts.spotify.com/authorize";
   url += "?response_type=token";
@@ -134,7 +138,7 @@ async function fetchAlbums(id, callback) {
   // console.log("fetch albums");
   const endpoint = `https://api.spotify.com/v1/artists/${id}/albums`;
   fetchJSONFromSpotify(endpoint, accessToken).then((JSON) => {
-    //    console.log("albums", JSON.items);
+    console.log("albums", JSON.items);
     callback(JSON.items);
     // console.log("done with albums");
   });
