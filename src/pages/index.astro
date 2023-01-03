@@ -6,6 +6,7 @@ import Difficulty from '../components/Difficulty.astro';
 import Quiz from '../components/Quiz.astro';
 import Result from '../components/Result.astro';
 import EndResult from '../components/EndResult.astro';
+import ResetModal from '../components/ResetModal.astro';
 ---
 
 <Layout title="The Spotify Fan Destroyer">
@@ -16,8 +17,32 @@ import EndResult from '../components/EndResult.astro';
 		<Quiz></Quiz>
 		<Result></Result>
 		<EndResult></EndResult>
+		<button class="close-button"><svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path d="M28.5 9.615L26.385 7.5L18 15.885L9.615 7.5L7.5 9.615L15.885 18L7.5 26.385L9.615 28.5L18 20.115L26.385 28.5L28.5 26.385L20.115 18L28.5 9.615Z" fill="white"/>
+			</svg>
+		</button>
+		<ResetModal></ResetModal>	
 	</main>
 </Layout>
 
 <style>
+	.close-button{
+		display: none;
+		height: 4rem;
+		width: 4rem;
+		border-radius: 0.375rem;
+		place-content: center center;
+		background: none;
+		position: absolute;
+		top: 2rem;
+		right: 2rem;
+		padding: 0;
+	}
+	.close-button > svg{
+		pointer-events: none;
+	}
+	button.close-button:hover{
+		background: var(--black-hover);
+	}
+
 </style>

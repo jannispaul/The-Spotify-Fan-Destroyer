@@ -1,7 +1,7 @@
 // Variables for quiz
 let accessToken;
-const numberOfRounds = 5;
-let trackList;
+const numberOfRounds = 1;
+let trackList = [];
 let allTracks = [];
 let currentRound = 0;
 let correctAnswers = [];
@@ -9,6 +9,14 @@ let selectedArtist = { id: "", name: "" };
 let favoriteArtists;
 let duration;
 let playbacksUsed = 0;
+let emojis = {
+  0: "🥴😵😤😭",
+  1: "🥴🥺😱😰😨🥵",
+  2: "🥲🙃😳😶‍🌫️🫣",
+  3: "🥲🙃😑",
+  4: "😎🤘",
+  5: "😎🤘🎉🥳🍾🤩😍",
+};
 
 // HTML elements
 let artistsContainer = document.querySelector(".artists-container");
@@ -30,6 +38,9 @@ let artistSearchInput = document.querySelector("input.search");
 let artistPreviewImage = document.querySelector(".artist-preview-image");
 let playButtons = document.querySelectorAll(".play-button");
 let playBacksLeftIndicator = document.querySelector(".playbacks-left");
+const closeButton = document.querySelector(".close-button");
+const resetButton = document.querySelector(".reset-button");
+const resetModal = document.querySelector(".modal-wrapper");
 
 // Utility functions
 function hideSection(element) {
@@ -261,6 +272,7 @@ function createTrackList() {
 function showDifficulty() {
   hideSection(".artist-section");
   showSection(".difficulty-section");
+  closeButton.style.display = "flex";
 }
 // Set artists name
 function setArtistName(name) {
@@ -444,6 +456,7 @@ function showResult(params) {
     ? (nextText.textContent = "Finish")
     : (nextText.textContent = "Continue");
 }
+
 function resetQuiz(params) {
   currentRound = 0;
   trackList.length = 0;
@@ -509,13 +522,22 @@ window.addEventListener(
       event.target.blur();
       showQuiz();
     }
+    // Show modal to restart
+    if (event.target.matches(".close-button")) {
+      resetModal.style.display = "flex";
+    }
     // Restart quiz
     if (
       event.target.matches(".restart-button") ||
       event.target.matches(".reset-button")
     ) {
+      resetModal.style.display = "none";
       resetQuiz();
     }
+    if (event.target.matches(".close-modal-button")) {
+      resetModal.style.display = "none";
+    }
+
     console.log(event);
   },
   true

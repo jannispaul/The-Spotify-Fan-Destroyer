@@ -1,0 +1,55 @@
+
+<div class="modal-wrapper">
+<div class="reset-modal">
+	<h2>Start over?</h2>
+	<p>
+		You will lose your progress.
+	</p>
+	<div class="reset-button-wrapper">
+		<button class="close-modal-button">No, continue</button>
+		<button class="reset-button">Yes, stop the game</button>
+	</div>
+</div>
+
+</div>
+
+<style>
+.modal-wrapper {
+	display: none;
+	width: 100vw;
+	height: 100vh;
+	align-items: center;
+	justify-content: center;
+	position: fixed;
+	top:0;
+	left:0;
+	z-index: 2;
+	background: rgba(0,0,0,0.5);
+	backdrop-filter: blur(20px);
+
+}	
+
+.reset-modal{
+	border-radius: 1.25rem;
+	background: var(--black);
+	padding: 2rem;
+}
+
+button.close-modal-button {
+	background: none;
+	border: 2px solid var(--gray-dark);
+	color: var(--white);
+
+}
+button.close-modal-button:hover {
+	background: var(--black-hover);
+}
+.reset-button-wrapper{
+	margin-top: 2rem;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+}
+
+
+</style>

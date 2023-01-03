@@ -1,14 +1,26 @@
 
 <div class="end-section">
-	<h1 class="final-message"></h1>
-	<div class="score-card">
-		<span class="final-score"></span>
+	<div class="end-wrapper">
+
+		<h1 class="final-message"></h1>
+		<div class="score-card">
+			<span class="final-score"></span>
+		</div>
+		<button class="restart-button">Start over</button> 
 	</div>
-	<button class="restart-button">Start over</button> 
 </div>
 
 <style>
 .end-section {
 	display: none;
+}
+.end-wrapper{
+	display: flex;
+	justify-content: center;
+	min-height: 100vh;
+	display: flex;
+	place-content: center center;
+	flex-direction: column;
+	margin-top: -10vh;
 }	
 </style>
