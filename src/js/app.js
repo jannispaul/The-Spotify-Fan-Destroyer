@@ -8,6 +8,7 @@ let correctAnswers = [];
 let selectedArtist = { id: "", name: "" };
 let favoriteArtists;
 let duration;
+let playbacksUsed = 0;
 
 // HTML elements
 let artistsContainer = document.querySelector(".artists-container");
@@ -27,6 +28,7 @@ let nextButton = document.querySelector(".next-button");
 let nextText = document.querySelector(".next-text");
 let artistSearchInput = document.querySelector("input.search");
 let artistPreviewImage = document.querySelector(".artist-preview-image");
+let playButtons = document.querySelectorAll(".play-button");
 
 // Utility functions
 function hideSection(element) {
@@ -282,6 +284,7 @@ function showQuiz(params) {
     setAudioSource();
     createAnswers();
     resetRadioButtons();
+    resetPlayButtons();
     showSection(".quiz-section");
   } else {
     nextText.innerText = "Continue";
@@ -324,6 +327,7 @@ function createAnswers() {
     (track) => track.name !== trackList[currentRound].name
   );
   // console.log(otherTracks, trackList, trackList[currentRound]);
+
   // Create answers array with 4 random tracks
   let answers = shuffle([...otherTracks]).slice(0, 4);
   // Select random track and replace it with the right answer
@@ -348,22 +352,72 @@ function setAudioSource() {
 // Play audio snippet
 function playAudioSnippet() {
   audioElement.play();
+  activatePlayButton();
   audioElement.addEventListener("timeupdate", function () {
+    updatePlayPosition((audioElement.currentTime / duration) * 100);
+
+    // When over duration pause audio snippet
     if (audioElement.currentTime > duration) {
       audioElement.pause();
       audioElement.currentTime = 0;
+      disablePlayButton();
     }
+  });
+}
+
+function activatePlayButton() {
+  let activePlayButton = playButtons[playbacksUsed];
+  // if (activePlayButton.disabled) return;
+  activePlayButton.classList.add("playing");
+  activePlayButton.innerHTML = `<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M19.5414 8.59035L17.8491 21.8506C17.1621 21.3286 16.3411 20.9556 15.4235 20.8385C12.6458 20.484 10.1088 22.4467 9.75436 25.2245C9.39987 28.0022 11.3626 30.5391 14.1403 30.8936C16.9181 31.2481 19.455 29.2854 19.8095 26.5077L21.4135 13.9387L26.4411 14.5803L27.0827 9.55277L19.5414 8.59035Z" fill="white"/>
+      <path opacity="0.9" d="M28.9191 23.4178L30.8159 28.7531C30.4564 28.6872 30.0748 28.7033 29.7056 28.8346C28.588 29.2319 28.0046 30.459 28.4019 31.5766C28.7993 32.6942 30.0263 33.2776 31.144 32.8803C32.2616 32.4829 32.845 31.2559 32.4477 30.1382L30.6497 25.0811L32.6725 24.3619L31.9534 22.339L28.9191 23.4178Z" fill="white"/>
+      <path opacity="0.9" fill-rule="evenodd" clip-rule="evenodd" d="M5.43859 13.2026L3.41763 6.85938L9.6833 4.86312L10.8225 4.50017L11.5887 6.90517L13.5043 12.9177C13.9277 14.2464 13.251 15.6475 11.9922 16.0486C10.7333 16.4497 9.37084 15.6983 8.9475 14.3695C8.52415 13.0407 9.20085 11.6396 10.4597 11.2386C10.8755 11.1061 11.3031 11.109 11.7042 11.2063L10.4495 7.26813L5.32308 8.90142L7.23868 14.9139C7.66203 16.2427 6.98532 17.6438 5.72649 18.0448C4.46767 18.4459 3.10518 17.6945 2.68183 16.3657C2.25849 15.037 2.93519 13.6359 4.19402 13.2348C4.60983 13.1024 5.03739 13.1052 5.43859 13.2026Z" fill="white"/>
+      </svg>
+      `;
+}
+// Disable play button
+function disablePlayButton() {
+  playButtons[playbacksUsed].classList.remove("playing");
+  playButtons[playbacksUsed].toggleAttribute("disabled");
+  playButtons[
+    playbacksUsed
+  ].innerHTML = `<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g opacity="0.5">
+  <path d="M13.5002 24.2548L7.24523 17.9998L5.11523 20.1148L13.5002 28.4998L31.5002 10.4998L29.3852 8.38477L13.5002 24.2548Z" fill="white"/>
+  </g>
+  </svg>
+  `;
+  playbacksUsed++;
+  playButtons[playbacksUsed]?.toggleAttribute("disabled");
+}
+// Write percentage of audio snippet that has played into style as custom css prop --percentage
+function updatePlayPosition(percentage) {
+  if (playbacksUsed > playButtons.length - 1) return;
+  playButtons[playbacksUsed].style = `--percentage:${percentage};`;
+}
+
+// Resets all play buttons
+function resetPlayButtons() {
+  // reset play back count
+  playbacksUsed = 0;
+  // Reset icon and disabled
+  playButtons.forEach((el, index) => {
+    el.innerHTML = `<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="pointer-events:none;">
+    <path d="M9 6.9998C9 5.44933 10.6879 4.48852 12.0211 5.28009L31.3668 16.7666C32.672 17.5416 32.672 19.4311 31.3668 20.206L12.0211 31.6926C10.6879 32.4841 9 31.5233 9 29.9729V6.9998Z" fill="#181818"/>
+    </svg>`;
+    index === 0 ? el.removeAttribute("disabled") : (el.disabled = true);
   });
 }
 
 // Check if anser is correct and update score accordingly
 function checkAnswers(params) {
   let answer = answerForm.elements.namedItem("answer").value;
-  console.log(answer);
+  // console.log(answer);
   answer === trackList[currentRound].id
     ? (correctAnswers[currentRound] = true)
     : (correctAnswers[currentRound] = false);
-  console.log(correctAnswers);
+  // console.log(correctAnswers);
 }
 
 // Show result
