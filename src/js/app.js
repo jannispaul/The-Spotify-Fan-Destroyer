@@ -50,10 +50,6 @@ function stringToHTML(str) {
   // console.log(doc.body.children);
   return doc.body.children[0];
 }
-console.log("log;", import.meta.env.MODE);
-console.log("log;", import.meta.env.DEV);
-console.log("log;", import.meta.env.PUBLIC_CLIENT_ID);
-console.log("log;", import.meta.env.BASE_URL);
 
 // Authorization
 function setAccessToken() {
