@@ -56,9 +56,7 @@ function setAccessToken() {
 }
 function authorize() {
   // console.log("authorizing")
-  // const clientId = "e69bbbb55e4748a5a304e7bf114b23ef"; // Change this to your apps clientID
   const clientId = import.meta.env.CLIENT_ID; // Change this to your apps clientID
-  // const redirectUri = "http://localhost:3000/"; // Change this to your URI
   const redirectUri = REDIRECT_URI; // Change this to your URI
   const scope = "user-top-read";
   let url = "https://accounts.spotify.com/authorize";
