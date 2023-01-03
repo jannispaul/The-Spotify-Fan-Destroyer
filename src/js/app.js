@@ -25,6 +25,8 @@ let finalMessage = document.querySelector(".final-message");
 let finalScore = document.querySelector(".final-score");
 let nextButton = document.querySelector(".next-button");
 let nextText = document.querySelector(".next-text");
+let artistSearchInput = document.querySelector("input.search");
+let artistPreviewImage = document.querySelector(".artist-preview-image");
 
 // Utility functions
 function hideSection(element) {
@@ -95,6 +97,7 @@ async function fetchJSONFromSpotify(endpoint) {
   };
   const response = await fetch(endpoint, requestOptions);
   if (!response.ok) {
+    console.log("response error");
     showSection(".login-section");
     hideSection(".artist-section");
     const message = `An error has occured: ${response.status}. Your access token is propably expired`;
@@ -118,11 +121,38 @@ function fetchFavoriteArtists(callback) {
 // Show artists on page
 function showArtists(artistsArray) {
   // console.log("artists", artistsArray);
-  artistsArray.items.forEach((el) => {
-    let htmlString = `<button class="artist-button selector" data-id="${el.id}"><img src="${el.images[1].url}" alt="Artist image of ${el.name}"/>${el.name}</button>`;
+
+  // Check if artists are in an array of items
+  let artists;
+  if (artistsArray.items) {
+    artists = artistsArray.items;
+  } else {
+    artists = artistsArray;
+  }
+
+  artists.forEach((el) => {
+    let htmlString = `<button class="artist-button selector" data-id="${el.id}" data-name="${el.name}"><img src="${el.images[1]?.url}" alt="Artist image of ${el.name}"/>${el.name}</button>`;
     artistsContainer.appendChild(stringToHTML(htmlString));
     // console.log(el);
   });
+}
+
+// Search for an artist
+function searchForArtist(event, callback) {
+  const searchQuery = event.target.value.trim();
+  console.log("event", event.target.value);
+  if (searchQuery === "" || searchQuery === undefined) {
+    artistsContainer.innerHTML = "";
+    showArtists(favoriteArtists);
+  } else {
+    const endpoint = `https://api.spotify.com/v1/search?q=${searchQuery}&type=artist`;
+    fetchJSONFromSpotify(endpoint, accessToken).then((searchJSON) => {
+      console.log(searchJSON.artists);
+      artistsContainer.innerHTML = "";
+      callback(searchJSON.artists);
+      // favoriteArtists = searchJSON.items;
+    });
+  }
 }
 
 // Get artists most popular tracks
@@ -225,14 +255,17 @@ function showDifficulty() {
 function setArtistName(name) {
   artistName.innerText = name;
 }
+function setArtistImage(source) {
+  artistPreviewImage.src = source;
+}
 
 // Select artist
-function selectArtist(id) {
-  // console.log("id:", id, "artists:", favoriteArtists);
-  selectedArtist = favoriteArtists.filter((artist) => artist.id === id)[0];
-  // console.log("selectedArtist", selectedArtist.name);
-  setArtistName(selectedArtist.name);
-}
+// function selectArtist(name) {
+//   // console.log("id:", id, "artists:", favoriteArtists);
+//   // selectedArtist = favoriteArtists.filter((artist) => artist.id === id)[0];
+//   // console.log("selectedArtist", selectedArtist.name);
+//   setArtistName(name);
+// }
 
 // Show the quiz
 function showQuiz(params) {
@@ -359,7 +392,12 @@ function resetQuiz(params) {
   showSection(".artist-section");
 }
 
-// Event listener with delegation
+// Event listeners
+artistSearchInput.addEventListener("keyup", (event) =>
+  searchForArtist(event, showArtists)
+);
+
+// CLick events with event delegation
 window.addEventListener(
   "click",
   (event) => {
@@ -370,7 +408,8 @@ window.addEventListener(
     // Select an artist
     if (event.target.matches(".artist-button")) {
       // console.log(event.target.dataset.id);
-      selectArtist(event.target.dataset.id);
+      setArtistName(event.target.dataset.name);
+      setArtistImage(event.target.childNodes[0].src);
       fetchTracks(event.target.dataset.id);
       showDifficulty();
     }

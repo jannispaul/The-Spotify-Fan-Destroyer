@@ -80,7 +80,7 @@ const { title } = Astro.props;
 	}
 	h1{
 		font-size: 2.5rem;
-		margin-bottom: 4rem;
+		margin-bottom: 1rem;
 		font-weight: 800;
 	}
 	h2{
@@ -93,10 +93,11 @@ const { title } = Astro.props;
 		line-height: 1.5;
 	}
 
-	.artist-button > img {
-		pointer-events: none;
+	.intro-p{
+		max-width: 34ch;
+		margin-bottom: 2.5rem;
 	}
-
+	
 	/* Buttons */
 	
 	button{
@@ -136,9 +137,9 @@ const { title } = Astro.props;
 		color: white;
 		height: auto;
 		transition: background 200ms ease, border 200ms ease;
-
+		
 	}
-
+	
 	button.selector:hover{
 		background: var(--black-hover);
 		border-color: #949494;
@@ -155,7 +156,10 @@ const { title } = Astro.props;
 		height: 3rem;
 		object-fit: cover;
 		border-radius: 99rem;
-
+		
+	}
+	.artist-button > img {
+		pointer-events: none;
 	}
 
 	/* Result */
