@@ -131,7 +131,12 @@ function showArtists(artistsArray) {
   }
 
   artists.forEach((el) => {
-    let htmlString = `<button class="artist-button selector" data-id="${el.id}" data-name="${el.name}"><img src="${el.images[1]?.url}" alt="Artist image of ${el.name}"/>${el.name}</button>`;
+    let artistImage = `<div class="artist-image">${el.name.charAt(0)}</div>`;
+    if (el.images[1]) {
+      artistImage = `<img class="artist-image" src="${el.images[1]?.url}" alt="Artist image of ${el.name}"/>`;
+    }
+
+    let htmlString = `<button class="artist-button selector" data-id="${el.id}" data-name="${el.name}">${artistImage}${el.name}</button>`;
     artistsContainer.appendChild(stringToHTML(htmlString));
     // console.log(el);
   });
@@ -139,18 +144,25 @@ function showArtists(artistsArray) {
 
 // Search for an artist
 function searchForArtist(event, callback) {
+  // Get shearch query and trim empty spaces
   const searchQuery = event.target.value.trim();
-  console.log("event", event.target.value);
+
+  // If search query is empty
   if (searchQuery === "" || searchQuery === undefined) {
+    // Remove all content from container
     artistsContainer.innerHTML = "";
+    // Show favorite artists
     showArtists(favoriteArtists);
   } else {
     const endpoint = `https://api.spotify.com/v1/search?q=${searchQuery}&type=artist`;
     fetchJSONFromSpotify(endpoint, accessToken).then((searchJSON) => {
-      console.log(searchJSON.artists);
+      // console.log(searchJSON.artists);
+
+      // Remove all content from container
       artistsContainer.innerHTML = "";
+
+      // Show search results
       callback(searchJSON.artists);
-      // favoriteArtists = searchJSON.items;
     });
   }
 }

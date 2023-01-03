@@ -16,7 +16,8 @@
 		<span class="header-emoji">🤨</span>
 		<h1>How big of a fan <br><span>are you really?</span></h1>
 		<p class="intro-p">Find out by listening to a short snippet and try to identify the song.</p>
-		<input type="text" class="search" autofocus/>
+		<span class="subline">Pick your artist</span>
+		<input type="text" class="search" autofocus aria-label="search spotify for an artist"/>
 		<div class="artists-container"></div>
 	</div>
 </div>
@@ -73,6 +74,11 @@
 		/* outline: 2px auto red; */
 		border: 2px solid var(--primary);
 		/* box-shadow: 2px 2px 2px red; */
+	}
+	.subline{
+		font-size: 1.25rem;
+		margin-bottom: 1.5rem;
+		font-weight: 700;
 	}
 
 	@media (min-width: 768px){
