@@ -1,6 +1,6 @@
 // Variables for quiz
 let accessToken;
-const numberOfRounds = 2;
+const numberOfRounds = 5;
 let trackList = [];
 let allTracks = [];
 let currentRound = 0;
@@ -499,11 +499,17 @@ function resetPlayButtons() {
   // reset play back count
   playbacksUsed = 0;
   playBacksLeftIndicator.innerText = 3;
-  // Reset icon and disabled
+
   playButtons.forEach((el, index) => {
+    // Reset icon
     el.innerHTML = `<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="pointer-events:none;">
     <path d="M9 6.9998C9 5.44933 10.6879 4.48852 12.0211 5.28009L31.3668 16.7666C32.672 17.5416 32.672 19.4311 31.3668 20.206L12.0211 31.6926C10.6879 32.4841 9 31.5233 9 29.9729V6.9998Z" fill="#181818"/>
     </svg>`;
+    // Remove playing class
+    el.classList.remove("playing");
+    // Remove inline style for percentage
+    el.style = ``;
+    // Set disabled attribute
     index === 0 ? el.removeAttribute("disabled") : (el.disabled = true);
   });
 }
