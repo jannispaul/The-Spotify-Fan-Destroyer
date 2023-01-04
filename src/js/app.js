@@ -9,14 +9,6 @@ let selectedArtist = { id: "", name: "" };
 let favoriteArtists;
 let duration;
 let playbacksUsed = 0;
-let emojis = {
-  0: "🥴😵😤😭",
-  1: "🥴🥺😱😰😨🥵",
-  2: "🥲🙃😳😶‍🌫️🫣",
-  3: "🥲🙃😑",
-  4: "😎🤘",
-  5: "😎🤘🎉🥳🍾🤩😍",
-};
 
 // HTML elements
 let artistsContainer = document.querySelector(".artists-container");
@@ -41,6 +33,7 @@ let playBacksLeftIndicator = document.querySelector(".playbacks-left");
 const closeButton = document.querySelector(".close-button");
 const resetButton = document.querySelector(".reset-button");
 const resetModal = document.querySelector(".modal-wrapper");
+const endEmoji = document.querySelector(".end-emoji");
 
 // Utility functions
 function hideSection(element) {
@@ -308,18 +301,64 @@ function showQuiz(params) {
 function showEndResult() {
   let score = correctAnswers.filter((value) => value === true).length;
   finalScore.innerText = `You guessed ${score}/${trackList.length} correctly`;
-  const finalMessages = [
-    "You are a terrible fan",
-    "You call that fandom?",
-    "Do you know what a fan is?",
-    "You are a great fan – kinda",
-    "Not too bad of a fan",
-    "I’ll take it back. You’re a true fan.",
+
+  const endMessages = [
+    ["Let’s just not talk about it", "You tried. Did you though?"],
+    ["You call that fandom?"],
+    ["Are you sure you’re a fan?"],
+    ['Yeah...rigth. You\'re a "fan."'],
+    ["I guess you could call that a fan!?"],
+    ["Not bad!"],
+    ["You are a great fan – kinda"],
+    [
+      "I’ll take it back. You’re a true fan.",
+      "W.O.W.",
+      "Damn, you’re good!",
+      "Impressive, but not perfect",
+    ],
+    [
+      "I’ll take it back. You’re a true fan.",
+      "Holy sh*t you’re good!",
+      "We’ve got a stan here!",
+    ],
   ];
-  let messageIndex =
-    Math.floor((score / trackList.length) * finalMessages.length) - 1;
-  console.log("messageIndex", messageIndex);
-  finalMessage.innerText = finalMessages[messageIndex];
+
+  const emojis = [
+    ["🥴", "😵", "😤", "😭"],
+    ["🥴", "🥺", "😱", "😰", "😨", "🥵"],
+    ["🥲", "🙃", "😳", "😶‍", "🌫", "️🫣"],
+    ["🥲", "🙃", "😑"],
+    ["😎", "🤘"],
+    ["😎", "🤘", "🎉", "🥳", "🍾", "🤩", "😍"],
+  ];
+
+  // Get a random in
+  function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+  }
+  // based on score select an item from messages/emoji array
+  const messageIndex = Math.floor(
+    (score / trackList.length) * (endMessages.length - 1)
+  );
+  const emojiIndex = Math.floor(
+    (score / trackList.length) * (emojis.length - 1)
+  );
+
+  // Get random message from array of message for the score
+  const message =
+    endMessages[messageIndex][
+      getRandomInt(endMessages[messageIndex].length - 1)
+    ];
+
+  console.log(emojis[emojiIndex], emojiIndex);
+
+  const emoji = emojis[emojiIndex][getRandomInt(emojis[emojiIndex].length - 1)];
+
+  console.log(emoji);
+  // Set message
+  endEmoji.innerText = emoji;
+  finalMessage.innerText = message;
+
   hideSection(".result-section");
   showSection(".end-section");
 }
@@ -467,6 +506,7 @@ function resetQuiz(params) {
   hideSection(".end-section");
   hideSection(".difficulty-section");
   showSection(".artist-section");
+  closeButton.style.display = "none";
 }
 
 // Event listeners
