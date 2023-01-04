@@ -7,10 +7,12 @@ import Quiz from '../components/Quiz.astro';
 import Result from '../components/Result.astro';
 import EndResult from '../components/EndResult.astro';
 import ResetModal from '../components/ResetModal.astro';
+import Score from '../components/Score.astro';
 ---
 
 <Layout title="The Spotify Fan Destroyer">
 	<main>
+		<Score></Score>
 		<Login/>
 		<Artists></Artists>
 		<Difficulty></Difficulty>
@@ -44,5 +46,20 @@ import ResetModal from '../components/ResetModal.astro';
 	button.close-button:hover{
 		background: var(--black-hover);
 	}
+	main{
+		max-width: 60rem;
+		margin: auto;
+		min-height: 100vh;
+		/* display: grid; */
+		/* grid-template-rows: auto 1fr; */
+		/* display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column; */
+	}
+	
+	/* main > div{
+		width: 100%;
+	} */
 
 </style>

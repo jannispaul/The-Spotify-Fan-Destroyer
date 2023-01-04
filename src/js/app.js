@@ -1,6 +1,6 @@
 // Variables for quiz
 let accessToken;
-const numberOfRounds = 1;
+const numberOfRounds = 2;
 let trackList = [];
 let allTracks = [];
 let currentRound = 0;
@@ -34,6 +34,10 @@ const closeButton = document.querySelector(".close-button");
 const resetButton = document.querySelector(".reset-button");
 const resetModal = document.querySelector(".modal-wrapper");
 const endEmoji = document.querySelector(".end-emoji");
+const scoreContainer = document.querySelector(".score-container");
+const scoreBoard = document.querySelector(".score-board");
+const scoreStatusItem = document.querySelector(".round-status");
+let scoreStatus = [];
 
 // Utility functions
 function hideSection(element) {
@@ -282,8 +286,47 @@ function selectArtist(id, name) {
   selectedArtist.name = name;
 }
 
+// Create score board
+function initiateScoreBoard() {
+  // Create status items for each round
+  for (let i = 0; i < numberOfRounds - 1; i++) {
+    scoreBoard.append(scoreStatusItem.cloneNode());
+  }
+  // store all items in variable
+  scoreStatus = [...document.querySelectorAll(".round-status")];
+}
+
+function updateScoreBoard() {
+  console.log("score:", currentRound, correctAnswers);
+  // Add active class to current item
+  scoreStatus[currentRound]?.classList.add("active");
+  // Make sure scoreboard is not enlarged
+  scoreBoard.classList.remove("scaled");
+
+  // if no new answer has been given return
+  if (correctAnswers[currentRound] === undefined) return;
+  // Else set answer status
+  correctAnswers[currentRound]
+    ? scoreStatus[currentRound].classList.add("correct")
+    : scoreStatus[currentRound].classList.add("incorrect");
+  scoreStatus[currentRound].classList.remove("active");
+
+  // Scale the scoreboard large
+  scoreBoard.classList.add("scaled");
+}
+
+function resetScoreBoard() {
+  // Remove class from first item
+  // Remove all items after that
+  scoreStatus.forEach((el, index) => {
+    index === 0 ? el.classList.remove("correct", "incorrect") : el.remove();
+  });
+  // Empty array of status items
+  scoreStatus.length = 0;
+}
+
 // Show the quiz
-function showQuiz(params) {
+function showQuiz() {
   if (currentRound < numberOfRounds) {
     hideSection(".result-section");
     hideSection(".difficulty-section");
@@ -292,6 +335,7 @@ function showQuiz(params) {
     resetRadioButtons();
     resetPlayButtons();
     showSection(".quiz-section");
+    showSection(".score-container");
   } else {
     nextText.innerText = "Continue";
     showEndResult();
@@ -468,9 +512,12 @@ function resetPlayButtons() {
 function checkAnswers(params) {
   let answer = answerForm.elements.namedItem("answer").value;
   // console.log(answer);
+
+  // Set answer stats
   answer === trackList[currentRound].id
     ? (correctAnswers[currentRound] = true)
     : (correctAnswers[currentRound] = false);
+  updateScoreBoard();
   // console.log(correctAnswers);
 }
 
@@ -506,6 +553,9 @@ function resetQuiz(params) {
   hideSection(".end-section");
   hideSection(".difficulty-section");
   showSection(".artist-section");
+  resetScoreBoard();
+  hideSection(".score-container");
+
   closeButton.style.display = "none";
 }
 
@@ -534,6 +584,8 @@ window.addEventListener(
     // Select a difficulty
     if (event.target.matches(".difficulty-button")) {
       createTrackList();
+      initiateScoreBoard();
+      updateScoreBoard();
       duration = event.target.dataset.length;
       event.target.blur();
       showQuiz();
@@ -560,6 +612,7 @@ window.addEventListener(
       // answerButton.setAttribute("disabled", "");
       // nextButton.setAttribute("disabled", "");
       event.target.blur();
+      updateScoreBoard();
       showQuiz();
     }
     // Show modal to restart
