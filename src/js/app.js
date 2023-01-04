@@ -39,28 +39,37 @@ const scoreBoard = document.querySelector(".score-board");
 const scoreStatusItem = document.querySelector(".round-status");
 let scoreStatus = [];
 
-// Utility functions
+// Helper functions
+
+// Functions to hide elements
 function hideSection(element) {
-  // console.log("hiding", element);
-  document.querySelector(element).style.display = "none";
+  // Check if string for queryselector
+  typeof element === "string"
+    ? (document.querySelector(element).style.display = "none")
+    : (element.style.display = "none");
 }
+// Functions to show elements
 function showSection(element) {
-  // console.log("showing", element);
-  document.querySelector(element).style.display = "block";
+  // Check if string for queryselector
+  typeof element === "string"
+    ? (document.querySelector(element).style.display = "block")
+    : (element.style.display = "block");
 }
 
-/**
- * Convert a template string into HTML DOM nodes
- * @param  {String} str The template string
- * @return {Node}       The template HTML
- * Function from https://gomakethings.com/converting-a-string-into-markup-with-vanilla-js/
- */
+// Convert a template string into HTML DOM nodes
+// Function from https://gomakethings.com/converting-a-string-into-markup-with-vanilla-js/
 function stringToHTML(str) {
   let parser = new DOMParser();
   let doc = parser.parseFromString(str, "text/html");
   // console.log(doc.body.children);
   return doc.body.children[0];
 }
+
+// Funcation to get a random integer
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
+// End of helper functions
 
 // Authorization
 function setAccessToken() {
@@ -412,10 +421,6 @@ function resetRadioButtons() {
   answerOptions.forEach((el) => (el.checked = false));
 }
 
-function getRandomInt(max) {
-  return Math.floor(Math.random() * max);
-}
-
 // Populate possible answers
 function createAnswers() {
   // All tracks other than the current one
@@ -429,14 +434,12 @@ function createAnswers() {
   // Select random track and replace it with the right answer
   answers[getRandomInt(4)] = trackList[currentRound];
   // console.log(answers);
-  songNames.forEach(
-    (el, index) => {
-      el.textContent = answers[index].name;
-      answerOptions[index].setAttribute("value", answers[index].id);
-      // console.log(answers);
-      // console.log(answers[index].name);
-    } //answers[index].name)
-  );
+  songNames.forEach((el, index) => {
+    el.textContent = answers[index].name;
+    answerOptions[index].setAttribute("value", answers[index].id);
+    // console.log(answers);
+    // console.log(answers[index].name);
+  });
 }
 
 // Set audio source
@@ -529,13 +532,51 @@ function checkAnswers(params) {
 
 // Show result
 function showResult(params) {
-  console.log(trackList[currentRound]);
+  // console.log(trackList[currentRound]);
+  const correctResponses = [
+    "You were right",
+    "You weren’t bluffin...",
+    "Look at you go!",
+    "Ding, ding, ding — we got a winner!",
+    "Correct!",
+    "Well done!",
+    "Hell yeah!",
+    "Nice one!",
+    "Awesome!",
+    "Woohoo!",
+    "Epic!",
+    "Oh snap!",
+    "Right!",
+    "Success!",
+    "You really got this, huh?",
+    "Not bad!",
+  ];
+  const incorrectResponses = [
+    "Noope",
+    "Not quite...",
+    "Ouch!",
+    "Are you sure you’re a fan?",
+    "Yikes, that’s not right.",
+    "Nooope...",
+    "WROOONG!",
+    "Oops...",
+    "Uh oh...",
+    "Nice try.",
+    "Sorry, that’s not it",
+    "No dice",
+    "Close, but no cigar",
+    "Tough luck",
+  ];
+
+  //Show
   if (correctAnswers[currentRound]) {
-    message.innerText = "You were right";
+    message.innerText =
+      correctResponses[getRandomInt(correctResponses.length - 1)];
     songCard.classList.remove("incorrect");
     songCard.classList.add("correct");
   } else {
-    message.innerText = "You were wrong ";
+    message.innerText =
+      incorrectResponses[getRandomInt(incorrectResponses.length - 1)];
     songCard.classList.remove("correct");
     songCard.classList.add("incorrect");
   }
@@ -549,6 +590,7 @@ function showResult(params) {
     : (nextText.textContent = "Continue");
 }
 
+// Reset entire quiz
 function resetQuiz(params) {
   currentRound = 0;
   trackList.length = 0;
@@ -558,14 +600,14 @@ function resetQuiz(params) {
   hideSection(".result-section");
   hideSection(".end-section");
   hideSection(".difficulty-section");
-  showSection(".artist-section");
-  resetScoreBoard();
   hideSection(".score-container");
-
-  closeButton.style.display = "none";
+  resetScoreBoard();
+  hideSection(closeButton);
+  showSection(".artist-section");
 }
 
 // Event listeners
+// Keyup events for search
 artistSearchInput.addEventListener("keyup", (event) =>
   searchForArtist(event, showArtists)
 );
