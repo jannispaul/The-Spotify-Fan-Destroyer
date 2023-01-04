@@ -22,6 +22,7 @@ let songCard = document.querySelector(".song-card");
 let songCover = document.querySelector(".song-cover");
 let songTitle = document.querySelector(".song-title");
 const artistName = document.querySelector("[data-name='artist']");
+const roundNumber = document.querySelector("[data-name='round-number']");
 let finalMessage = document.querySelector(".final-message");
 let finalScore = document.querySelector(".final-score");
 let nextButton = document.querySelector(".next-button");
@@ -585,6 +586,8 @@ function showResult(params) {
   hideSection(".quiz-section");
   showSection(".result-section");
   currentRound++;
+  console.log(roundNumber);
+  roundNumber.innerText = currentRound + 1;
   currentRound === numberOfRounds
     ? (nextText.textContent = "Finish")
     : (nextText.textContent = "Continue");
@@ -603,6 +606,7 @@ function resetQuiz(params) {
   hideSection(".score-container");
   resetScoreBoard();
   hideSection(closeButton);
+  roundNumber.innerText = "1";
   showSection(".artist-section");
 }
 

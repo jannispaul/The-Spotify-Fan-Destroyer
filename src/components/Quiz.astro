@@ -6,7 +6,7 @@
 <div class="quiz-section">
 	<div class="quiz-wrapper">
 		<span class="header-emoji">🤔</span>
-		<h1>Round <span data-name="round-number"></span></h1>
+		<h1>Round <span data-name="round-number">1</span></h1>
 		<div class="player-container">
 			<div class="audio-container">
 				<button class="play-button" aria-label="playback 1/3" >
@@ -212,6 +212,11 @@
 		}
 		.quiz-wrapper{
 			padding: 3rem;
+		}
+
+		h1{
+			--main-rotation: 0;
+			--sub-rotation: 0;
 		}
 	}
 </style>
