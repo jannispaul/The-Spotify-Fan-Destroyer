@@ -6,22 +6,25 @@ This project is part of the master thesis *Fun*ctional - Fun in User Interfaces.
 - [Astro](https://astro.build)
 - HTML, CSS, JS (no Frameworks)
 
-The quiz can be played here:
+In order to play the quiz you need a **spotify account** and your account **email needs to be added** to the spotify developer dashboard. Please contact <wicke@th-brandenburg.de> to get access.
 
-Or cloned and run locally with a few adjustments.
+Once you have access, the quiz can be played here:<https://spotify-fan-destroyer.netlify.app>
+
+Or you can clone it and run it locally with a few adjustments.
 
 ## Running locally
 
 In order to run this project locally you need to:
 
-- clone the repository (and open it)
-- `pnpm install`
-- create an app in the spotify developer dashboard and set your redirectUri to http://localhost:3000
-  https://developer.spotify.com/dashboard/applications
-  https://developer.spotify.com/documentation/general/guides/authorization/app-settings/
-- change the variable redirectUri to http://localhost:3000
-- change the variable clientId to the one provided in your spotify app in the developer dashboard
-- `pnpm run dev`
+- Have a spotify account
+- Clone the repository (and open it)
+- Run `pnpm install` in the repository
+- Create an app in the [spotify developer dashboard](https://developer.spotify.com/dashboard/applications)
+- Copy the `client id`
+- Edit settings and set your redirectUri to `https://localhost:3000`. More info: <https://developer.spotify.com/documentation/general/guides/authorization/app-settings/>
+- Open the file `.env.development`
+- change the variable `PUBLIC_CLIENT_ID` to the client id provided in your spotify app in the developer dashboard
+- Run `pnpm run astro dev`
 
 ## Astro Commands
 
@@ -38,7 +41,8 @@ All commands are run from the root of the project, from a terminal:
 
 ## Credit
 
-With few exceptions the code was written by me, Jannis Paul Wicke.
+The code was mostly written by me, Jannis Paul Wicke specifically for this project.
+Here are the exceptions and sources the code ist from. All sources are also in the code itself.
 
 - The authorization code was created as part of a previous university project: `setAccessToken(), authorize(), fetchJSONFromSpotify()`
 - Fisher yates algorithm to randomly shuffle an array: https://javascript.info/array-methods#shuffle-an-array
