@@ -1,12 +1,14 @@
 # The Spotify Fan Destroyer
 
-This project is part of the master thesis *Fun*ctional - Fun in User Interfaces. This website was created as the practial part and uses:
+This project is part of the master thesis **Fun**ctional - Fun in User Interfaces. This website was created as the practial part and uses:
 
-- [Spotify Web API] (https://developer.spotify.com/documentation/web-api/)
+- [Spotify Web API](https://developer.spotify.com/documentation/web-api/)
 - [Astro](https://astro.build)
 - HTML, CSS, JS (no Frameworks)
 
+```
 In order to play the quiz you need a **spotify account** and your account **email needs to be added** to the spotify developer dashboard. Please contact <wicke@th-brandenburg.de> to get access.
+```
 
 Once you have access, the quiz can be played here:<https://spotify-fan-destroyer.netlify.app>
 
