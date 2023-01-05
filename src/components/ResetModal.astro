@@ -6,8 +6,8 @@
 		You will lose your progress.
 	</p>
 	<div class="reset-button-wrapper">
-		<button class="close-modal-button">No, continue</button>
-		<button class="reset-button">Yes, stop the game</button>
+		<button class="small close-modal-button">No, continue</button>
+		<button class="small reset-button">Yes, stop the game</button>
 	</div>
 </div>
 
@@ -16,7 +16,7 @@
 <style>
 .modal-wrapper {
 	display: none;
-	width: 100vw;
+	width: calc(100vw - 2 * var(--side-padding));
 	height: 100vh;
 	align-items: center;
 	justify-content: center;
@@ -26,13 +26,21 @@
 	z-index: 2;
 	background: rgba(0,0,0,0.5);
 	backdrop-filter: blur(20px);
-
+	padding: var(--side-padding);
+	
 }	
 
 .reset-modal{
 	border-radius: 1.25rem;
 	background: var(--black);
 	padding: 2rem;
+	max-width: 100%;
+	max-width: calc(100vw - 2 * var(--side-padding));
+
+	/* display: flex;
+	flex-direction: column;
+	justify-content: center; */
+
 }
 
 button.close-modal-button {
@@ -49,7 +57,11 @@ button.close-modal-button:hover {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 1rem;
+	justify-content: center;
 }
 
+@media (min-width: 768px){
 
+
+}
 </style>

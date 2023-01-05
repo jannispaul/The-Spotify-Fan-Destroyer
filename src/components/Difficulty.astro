@@ -35,7 +35,7 @@
 <style>
 	.difficulty-section {
 		display: none;
-		padding: var(--side-padding);
+		padding: var(--vertical-padding) var(--side-padding);
 	}
 	.difficulty-container{
 		display: grid;
@@ -72,8 +72,8 @@
 		height: 2.5rem;
 	}
 	img.artist-preview-image{
-		max-width: 2rem;
-		max-height: 2rem;
+		width: clamp(2rem, 10vh, 6rem);
+		height: clamp(2rem, 10vh, 6rem);
 		border-radius: 99rem;
 		margin-right: 1rem;
 		overflow: hidden;
@@ -83,7 +83,7 @@
 	/* Desktop styles*/
 	@media (min-width: 768px){
 		.difficulty-wrapper {
-			min-height: 100vh;
+			/* min-height: 100vh; */
 			display: flex;
 			place-content: center center;
 			flex-direction: column;
@@ -110,8 +110,8 @@
 		}
 		img.artist-preview-image{
 			display: inline-block;
-			max-width: 4rem;
-			max-height: 4rem;
+			width: clamp(2.5rem, 6vh, 5rem);
+			height: clamp(2.5rem, 6vh, 5rem);
 		}
 
 		h1{
