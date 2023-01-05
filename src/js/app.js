@@ -1,6 +1,6 @@
 // Variables for quiz
 let accessToken;
-const numberOfRounds = 5;
+const numberOfRounds = 2;
 let trackList = [];
 let allTracks = [];
 let currentRound = 0;
@@ -9,6 +9,7 @@ let selectedArtist = { id: "", name: "" };
 let favoriteArtists;
 let duration;
 let playbacksUsed = 0;
+let scoreStatus = [];
 
 // HTML elements
 let artistsContainer = document.querySelector(".artists-container");
@@ -38,7 +39,7 @@ const endEmoji = document.querySelector(".end-emoji");
 // const scoreContainer = document.querySelector(".score-container");
 const scoreBoard = document.querySelector(".score-board");
 const scoreStatusItem = document.querySelector(".round-status");
-let scoreStatus = [];
+const scoreListWrapper = document.querySelector(".score-list");
 
 // Helper functions
 
@@ -69,6 +70,10 @@ function stringToHTML(str) {
 // Funcation to get a random integer
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
+}
+
+function copyToClipBoard(string) {
+  navigator.clipboard.writeText(string);
 }
 // End of helper functions
 
@@ -351,10 +356,37 @@ function showQuiz() {
     showEndResult();
   }
 }
+
+function createEndScoreList() {
+  let scoreListString = "";
+  // Loop through tracks and create HTML string for each item
+  trackList.forEach((el, index) => {
+    scoreListString = `<a href="${
+      trackList[index].external_urls.spotify
+    }" target="_blank" class="score-list-item ${
+      correctAnswers[index] ? "correct" : "incorrect"
+    }"><img class="score-list-image" src="${
+      trackList[index].album.images[0].url
+    }" alt=""/><span class="score-list-title">${
+      trackList[index].name
+    }</span></a>`;
+    // Turn string into HTML and append
+    scoreListWrapper.append(stringToHTML(scoreListString));
+  });
+  console.log(trackList);
+}
+function resetEndScoreList(params) {
+  scoreListWrapper.innerHTML = "";
+}
 // Show the end result
 function showEndResult() {
   let score = correctAnswers.filter((value) => value === true).length;
   finalScore.innerText = `You guessed ${score}/${trackList.length} correctly`;
+
+  hideSection(closeButton);
+  finalScore.after(scoreBoard);
+
+  createEndScoreList();
 
   const endMessages = [
     ["Let’s just not talk about it", "You tried. Did you though?"],
@@ -605,6 +637,7 @@ function resetQuiz(params) {
   hideSection(".difficulty-section");
   hideSection(".score-container");
   resetScoreBoard();
+  resetEndScoreList();
   hideSection(closeButton);
   roundNumber.innerText = "1";
   showSection(".artist-section");
@@ -681,6 +714,10 @@ window.addEventListener(
     }
     if (event.target.matches(".close-modal-button")) {
       resetModal.style.display = "none";
+    }
+
+    if (event.target.matches("[data-name='copy-to-clipboard']")) {
+      copyToClipBoard("https://spotify-fan-destroyer.netlify.app/");
     }
 
     console.log(event);
