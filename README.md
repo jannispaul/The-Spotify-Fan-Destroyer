@@ -6,13 +6,11 @@ This project is part of the master thesis **Fun**ctional - Fun in User Interface
 - [Astro](https://astro.build)
 - HTML, CSS, JS (no Frameworks)
 
-```
+## Notice:
+
 In order to play the quiz you need a **spotify account** and your account **email needs to be added** to the spotify developer dashboard. Please contact <wicke@th-brandenburg.de> to get access.
-```
 
-Once you have access, the quiz can be played here:<https://spotify-fan-destroyer.netlify.app>
-
-Or you can clone it and run it locally with a few adjustments.
+Once you have access, the quiz can be played here: <https://spotify-fan-destroyer.netlify.app>
 
 ## Running locally
 
