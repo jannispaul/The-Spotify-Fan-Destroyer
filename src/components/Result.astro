@@ -20,26 +20,26 @@
 <style>
 .result-section {
 	display: none;
-	padding: 4rem;
+	padding: calc(2 * var(--side-padding)) var(--side-padding);
 }	
 .result-wrapper{
 	display: flex;
 	flex-direction: column;
 	width: 100%;
 	align-items: center;
-	gap: 5rem;
 }
 .song-card{
-	padding: 1.5rem;
+	padding: 1rem;
 	border-radius: 1.25rem;
 	border: 1px solid var(--black-selected);
-	width: 16rem;
+	width: calc(100% - 2rem);
+	max-width: calc(var(--mw-small) - 2rem);
 	display: flex;
 	flex-direction: column;
 	gap: 1.25rem;
 	background: var(--black);
-	max-width: 100%;
 	position: relative;
+	margin-bottom: 2rem;
 }
 .song-cover{
 	max-width: 100%;
@@ -57,4 +57,36 @@
 .next-text{
 	pointer-events: none;
 }
+
+@media (min-width: 768px){
+	.song-card{
+		padding: 1.5rem;
+
+	}
+	.result-wrapper{
+		gap: 5rem;
+	}
+
+}
+</style>
+
+<style is:global>
+
+.song-card::after{
+	position: absolute;
+	font-size: 2rem;
+	top: 0;
+	right: 0;
+	transform: rotateZ(10deg);
+}
+
+@media (min-width: 768px){
+
+	.song-card::after{
+		font-size: 3rem;
+		top: -1rem;
+		right: -1rem;
+	}
+}
+
 </style>

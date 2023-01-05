@@ -70,14 +70,9 @@
 <style>
 	.quiz-section{
 		display: none;
-		padding: 2rem;
+		padding: var(--side-padding);
 	}
-	.quiz-wrapper{
-		background: var(--black);
-		border: 2px solid var(--black-selected);
-		border-radius: 1.25rem;
-	}
-
+	
 	.player-container{
 		margin-bottom: 3rem;
 	}
@@ -121,10 +116,10 @@
 		inset:0;
 		--border-width: 3px;
 		background:
-			radial-gradient(farthest-side,var(--primary) 98%,#0000) top/var(--border-width) var(--border-width) no-repeat,
-			conic-gradient(var(--primary) calc(var(--percentage)*1%),#0000 0);
+		radial-gradient(farthest-side,var(--primary) 98%,#0000) top/var(--border-width) var(--border-width) no-repeat,
+		conic-gradient(var(--primary) calc(var(--percentage)*1%),#0000 0);
 		-webkit-mask:radial-gradient(farthest-side,#0000 calc(99% - var(--border-width)),#000 calc(100% - var(--border-width)));
-			mask:radial-gradient(farthest-side,#0000 calc(99% - var(--border-width)),#000 calc(100% - var(--border-width)));
+		mask:radial-gradient(farthest-side,#0000 calc(99% - var(--border-width)),#000 calc(100% - var(--border-width)));
 		animation: percentage 100ms linear;
 	}
 	@keyframes percentage{
@@ -135,7 +130,7 @@
 		background:var(--c);
 		transform:rotate(calc(var(--p)*3.6deg)) translateY(calc(50% - var(--w)/2));
 	} */
- 
+	
 	.answer-form{
 		display: flex;
 		flex-direction: column;
@@ -147,10 +142,11 @@
 		display: block;
 		max-width: 20ch;
 		white-space: nowrap;
-  		overflow: hidden;
-  		text-overflow: ellipsis;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 	fieldset{
+		max-width: var(--mw-small);
 		border:none;
 		width: 100%;
 	}
@@ -165,7 +161,12 @@
 	}
 	.answer-wrapper{
 		position: relative;
-
+		
+	}
+	.answer-button {
+		display: flex;
+		justify-content: center;
+		width: 100%;
 	}
 	.answer-wrapper > input{
 		position: absolute;
@@ -202,21 +203,33 @@
 	}
 	
 	@media (min-width: 768px){
+		.quiz-wrapper{
+			background: var(--black);
+			border: 2px solid var(--black-selected);
+			border-radius: 1.25rem;
+		}
+		fieldset{
+			max-width: 100%;
+
+		}
 		.answers{
 			grid-template-columns: 1fr 1fr;
 		}
 		label.selector{
-			height: 4rem;
+			height: 3.75rem;
 			font-size: 1.25rem;
 			font-weight: 700;
 		}
 		.quiz-wrapper{
 			padding: 3rem;
 		}
-
+		
 		h1{
 			--main-rotation: 0;
 			--sub-rotation: 0;
+		}
+		.answer-button{
+			padding: 0 3rem;
 		}
 	}
 </style>

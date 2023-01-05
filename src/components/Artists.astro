@@ -25,14 +25,13 @@
 <style>
 	.artist-section{
 		display: none;
-		padding: 2rem;
+		padding: var(--side-padding)
 	}
 	.artist-wrapper{
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		padding-top: 4rem;
-		padding: 4rem 2rem 0;
+		/* padding-top: 4rem; */
 	}
 	.artists-container{
 		display: grid;
@@ -43,7 +42,7 @@
 		overflow: scroll;
 		max-height: 100%;
 	}
-
+	
 	.artists-container::after{
 		content: " ";
 		position: fixed;
@@ -55,7 +54,7 @@
 		background: linear-gradient(rgba(0,0,0,0), rgba(10,10,10,1));
 		pointer-events: none;
 	}
-
+	
 	input.search{
 		height: 3.5rem;
 		display: flex;
@@ -66,6 +65,8 @@
 		border: 2px solid var(--black-hover);
 		border-radius: 0.375rem;
 		width: 35%;
+		width: calc(100% - (2 * var(--side-padding)));
+		max-width: var(--mw-small);
 		margin-bottom: 2.5rem;
 		
 	}
@@ -81,12 +82,17 @@
 		margin-bottom: 1.5rem;
 		font-weight: 700;
 	}
-
+	
 	@media (min-width: 768px){
+		.artist-section {
+			padding: 2rem;
+		}
 		.artists-container{
 			grid-template-columns: repeat( auto-fit, minmax(250px, 1fr) );
 		}
-		
+		.artist-wrapper{
+			padding: 4rem 2rem 0;
+		}		
 	}
-
-</style>
+	
+	</style>

@@ -46,6 +46,8 @@ const { title } = Astro.props;
 		--black-hover: #232323;
 		--black-selected: #272727;
 		--gray-dark: #5F5F5F;
+		--side-padding: 6%;
+		--mw-small: 20rem;
 	}
 	html {
 		font-family: system-ui, Arial, Helvetica, sans-serif;
@@ -72,7 +74,7 @@ const { title } = Astro.props;
 	}
 	
 	h1{
-		font-size: 2.5rem;
+		font-size: 10vw;
 		margin-bottom: 1rem;
 		font-weight: 800;
 		line-height: 1.1;
@@ -86,7 +88,7 @@ const { title } = Astro.props;
 	p {
 		line-height: 1.5;
 	}
-
+	
 	.intro-p{
 		max-width: 34ch;
 		margin: 0 auto 2.5rem;
@@ -107,6 +109,10 @@ const { title } = Astro.props;
 		align-items: center;
 		background: var(--primary);
 		cursor: pointer;
+		width: 100%;
+		max-width: var(--mw-small);
+		display: flex;
+		justify-content: center;
 	}
 	button:disabled{
 		background: #5F5F5F;
@@ -131,6 +137,7 @@ const { title } = Astro.props;
 		color: white;
 		height: auto;
 		transition: background 200ms ease, border 200ms ease;
+		overflow: hidden;
 		
 	}
 	
@@ -145,11 +152,14 @@ const { title } = Astro.props;
 		/* outline: -webkit-focus-ring-color auto 0px!important; */
 		outline: none;
 	}
+	button.artist-button {
+		height: 4rem;
+		padding: 0;
+	}
 	button.artist-button >.artist-image{
-		width: 3rem;
-		height: 3rem;
+		width: 4rem;
+		height: 4rem;
 		object-fit: cover;
-		border-radius: 99rem;
 		background: rgba(255,255,255,0.05);
 		display: flex;
 		align-items: center;
@@ -158,15 +168,8 @@ const { title } = Astro.props;
 		
 	}
 	
-	/* Result */
-	.song-card::after{
-		position: absolute;
-		font-size: 3rem;
-		top: -1rem;
-		right: -1rem;
-		transform: rotateZ(10deg);
-	}
-
+	
+	
 	.correct::after{
 		content: "✅";
 	}
@@ -177,18 +180,19 @@ const { title } = Astro.props;
 	.header-emoji {
 		font-size: 3rem;
 	}
-
+	
 	@media (min-width: 768px){
 		a, button, input, p {
 			font-size: 1.25rem;
 		}
-		 h1{
+		h1{
+			/* font-size: 2.5rem; */
 			font-size: 6rem;
 		}
 		/* h1{
 			font-size: 6rem;
 			transform: rotateZ(2deg);
-
+			
 		}
 		h1>span:last-of-type{
 			display: inline-block;
@@ -208,9 +212,8 @@ const { title } = Astro.props;
 			padding: 2rem;
 			height: auto;
 		}
-	 	button.artist-button img{
-			width: 4rem;
-			height: 4rem;
+		button.artist-button >.artist-image{
+			border-radius: 99rem;
 		}
 
 		/* Headline rotation */
@@ -218,10 +221,13 @@ const { title } = Astro.props;
 			--main-rotation: 2deg;
 			--sub-rotation: -3deg;
 			transform: rotateZ(var(--main-rotation));
+			transition: transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
 		}
 		h1>span:last-of-type{
 			display: inline-block;
 			transform: rotateZ(var(--sub-rotation));
 		}
+
+		
 	}
 </style>
