@@ -73,6 +73,7 @@
 	border: 2px solid var(--black-selected);
 	margin-top: 2rem;
 	font-weight: 700;
+	max-width: calc(var(--mw-small) - 4rem);
 
 }
 .social-button{
@@ -95,6 +96,15 @@
 }
 .social-button:hover{
 	background: rgba(255,255,255,0.1);
+}
+@media (min-width: 768px){
+
+	.score-list{
+		width: var(--mw-small);	
+	}
+	.restart-button{
+		width: var(--mw-small);	
+	}
 }
 </style>
 <style is:global>

@@ -1,6 +1,6 @@
 // Variables for quiz
 let accessToken;
-const numberOfRounds = 5;
+const numberOfRounds = 1;
 let trackList = [];
 let allTracks = [];
 let currentRound = 0;
@@ -448,7 +448,7 @@ function showEndResult() {
   endEmoji.innerText = emoji;
   finalMessage.innerText = message;
 
-  if (score / trackList.length) {
+  if (score === trackList.length) {
     createConfetti();
   }
 
