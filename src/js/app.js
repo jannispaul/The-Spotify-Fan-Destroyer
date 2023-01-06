@@ -1,6 +1,6 @@
 // Variables for quiz
 let accessToken;
-const numberOfRounds = 1;
+const numberOfRounds = 5;
 let trackList = [];
 let allTracks = [];
 let currentRound = 0;
@@ -12,31 +12,30 @@ let playbacksUsed = 0;
 let scoreStatus = [];
 
 // HTML elements
-let artistsContainer = document.querySelector(".artists-container");
-let audioElement = document.querySelector(".audio-element");
-let songNames = document.querySelectorAll(".song-name");
-let answerOptions = document.querySelectorAll(".answer-option");
-let answerButton = document.querySelector(".answer-button");
-let answerForm = document.querySelector(".answer-form");
-let message = document.querySelector(".message");
-let songCard = document.querySelector(".song-card");
-let songCover = document.querySelector(".song-cover");
-let songTitle = document.querySelector(".song-title");
+const artistsContainer = document.querySelector(".artists-container");
+const audioElement = document.querySelector(".audio-element");
+const songNames = document.querySelectorAll(".song-name");
+const answerOptions = document.querySelectorAll(".answer-option");
+const answerButton = document.querySelector(".answer-button");
+const answerForm = document.querySelector(".answer-form");
+const message = document.querySelector(".message");
+const songCard = document.querySelector(".song-card");
+const songCover = document.querySelector(".song-cover");
+const songTitle = document.querySelector(".song-title");
 const artistName = document.querySelector("[data-name='artist']");
 const roundNumber = document.querySelector("[data-name='round-number']");
-let finalMessage = document.querySelector(".final-message");
-let finalScore = document.querySelector(".final-score");
-let nextButton = document.querySelector(".next-button");
-let nextText = document.querySelector(".next-text");
-let artistSearchInput = document.querySelector("input.search");
-let artistPreviewImage = document.querySelector(".artist-preview-image");
-let playButtons = document.querySelectorAll(".play-button");
-let playBacksLeftIndicator = document.querySelector(".playbacks-left");
+const finalMessage = document.querySelector(".final-message");
+const finalScore = document.querySelector(".final-score");
+const nextButton = document.querySelector(".next-button");
+const nextText = document.querySelector(".next-text");
+const artistSearchInput = document.querySelector("input.search");
+const artistPreviewImage = document.querySelector(".artist-preview-image");
+const playButtons = document.querySelectorAll(".play-button");
+const playBacksLeftIndicator = document.querySelector(".playbacks-left");
+const errorModal = document.querySelector(".error-modal-wrapper");
 const closeButton = document.querySelector(".close-button");
-// const resetButton = document.querySelector(".reset-button");
 const resetModal = document.querySelector(".modal-wrapper");
 const endEmoji = document.querySelector(".end-emoji");
-// const scoreContainer = document.querySelector(".score-container");
 const scoreBoard = document.querySelector(".score-board");
 const scoreStatusItem = document.querySelector(".round-status");
 const scoreListWrapper = document.querySelector(".score-list");
@@ -101,9 +100,6 @@ function setAccessToken() {
   );
 }
 function authorize() {
-  // console.log("authorizing")
-  // const clientId = "e69bbbb55e4748a5a304e7bf114b23ef"; // Change this to your apps clientID
-  // const redirectUri = "http://localhost:3000/"; // Change this to your URI
   const clientId = import.meta.env.PUBLIC_CLIENT_ID; // Change this to your apps clientID
   const redirectUri = import.meta.env.PUBLIC_REDIRECT_URI; // Change this to your URI
   const scope = "user-top-read";
@@ -135,17 +131,21 @@ async function fetchJSONFromSpotify(endpoint) {
     redirect: "follow",
   };
   const response = await fetch(endpoint, requestOptions);
+
+  // If there is an error log it, reset quiz, and show error modal
   if (!response.ok) {
     console.log(
       "Response error: Your email needs to be added to the spotify app. Please contact the admin at: wicke@th-brandenburg.de"
     );
-    document.querySelector(".error-modal-wrapper").style.display = "flex";
+    resetQuiz();
     showSection(".login-section");
     hideSection(".artist-section");
+    errorModal.style.display = "flex";
+
     const message = `An error has occured: ${response.status}.`;
     throw new Error(message);
   }
-
+  // Await the response and return the JSON
   let json = await response.json();
   return json;
 }
@@ -154,7 +154,6 @@ async function fetchJSONFromSpotify(endpoint) {
 function fetchFavoriteArtists(callback) {
   const endpoint = `https://api.spotify.com/v1/me/top/artists`;
   fetchJSONFromSpotify(endpoint, accessToken).then((favoritesJSON) => {
-    // console.log(favoritesJSON.items);
     callback(favoritesJSON);
     favoriteArtists = favoritesJSON.items;
   });
@@ -162,8 +161,6 @@ function fetchFavoriteArtists(callback) {
 
 // Show artists on page
 function showArtists(artistsArray) {
-  // console.log("artists", artistsArray);
-
   // Check if artists are in an array of items
   let artists;
   if (artistsArray.items) {
@@ -172,6 +169,7 @@ function showArtists(artistsArray) {
     artists = artistsArray;
   }
 
+  // Set artist buttons in html
   artists.forEach((el) => {
     let artistImage = `<div class="artist-image">${el.name.charAt(0)}</div>`;
     if (el.images[1]) {
@@ -180,7 +178,6 @@ function showArtists(artistsArray) {
 
     let htmlString = `<button class="artist-button selector" data-id="${el.id}" data-name="${el.name}">${artistImage}${el.name}</button>`;
     artistsContainer.appendChild(stringToHTML(htmlString));
-    // console.log(el);
   });
 }
 
@@ -197,9 +194,9 @@ function searchForArtist(event, callback) {
     showArtists(favoriteArtists);
   } else {
     const endpoint = `https://api.spotify.com/v1/search?q=${searchQuery}&type=artist`;
-    fetchJSONFromSpotify(endpoint, accessToken).then((searchJSON) => {
-      // console.log(searchJSON.artists);
 
+    // Fetach data
+    fetchJSONFromSpotify(endpoint, accessToken).then((searchJSON) => {
       // Remove all content from container
       artistsContainer.innerHTML = "";
 
@@ -224,15 +221,15 @@ async function fetchAlbums(id, callback) {
     callback(JSON.items);
   });
 }
-
+// Get all albums, get all songs from the album and add the tracks to alltracks
 async function iterateOverAlbumsArray(albumsArray) {
   albumsArray.forEach((album) => {
-    fetchSongsOfAlbum(album.id, album.images[0].url, addTracks);
+    fetchSongsOfAlbum(album.id, album.images[0].url);
   });
 }
 
 // Fetch all song from the album, push them to allTracks, ad album cover to track
-function fetchSongsOfAlbum(id, coverURL, callback) {
+function fetchSongsOfAlbum(id, coverURL) {
   const endpoint = `https://api.spotify.com/v1/albums/${id}/tracks`;
   fetchJSONFromSpotify(endpoint, accessToken).then((JSON) => {
     JSON.items.forEach((el) => {
@@ -241,9 +238,9 @@ function fetchSongsOfAlbum(id, coverURL, callback) {
     });
   });
 }
+// Add tracks to the trackArray
 async function addTracks(trackArray) {
   allTracks.push(...trackArray);
-  console.log("allTracksAdded", allTracks);
 }
 
 // Randomly shuffle fisher yates algorithm
@@ -305,6 +302,8 @@ function selectArtist(id, name) {
 
 // Create score board
 function initiateScoreBoard() {
+  // Make sure status item is not active
+  scoreStatusItem.classList.remove("active");
   // Create status items for each round
   for (let i = 0; i < numberOfRounds - 1; i++) {
     scoreBoard.append(scoreStatusItem.cloneNode());
@@ -313,6 +312,7 @@ function initiateScoreBoard() {
   scoreStatus = [...document.querySelectorAll(".round-status")];
 }
 
+// Update score board with correct and incorrect answers
 function updateScoreBoard() {
   // Add active class to current item
   scoreStatus[currentRound]?.classList.add("active");
@@ -331,6 +331,7 @@ function updateScoreBoard() {
   scoreBoard.classList.add("scaled");
 }
 
+// Reset scoreboard by removing correct and incorrect classes
 function resetScoreBoard() {
   // Remove class from first item
   // Remove all items after that
@@ -363,7 +364,7 @@ function showQuiz() {
     showEndResult();
   }
 }
-
+// Create list of songs with links and image
 function createEndScoreList() {
   let scoreListString = "";
   // Loop through tracks and create HTML string for each item
@@ -381,19 +382,25 @@ function createEndScoreList() {
     scoreListWrapper.append(stringToHTML(scoreListString));
   });
 }
+// Reset list
 function resetEndScoreList(params) {
   scoreListWrapper.innerHTML = "";
 }
+
 // Show the end result
 function showEndResult() {
   let score = correctAnswers.filter((value) => value === true).length;
   finalScore.innerText = `You guessed ${score}/${trackList.length} correctly`;
 
   hideSection(closeButton);
+
+  // Move the scoreBoard under the final score
   finalScore.after(scoreBoard);
 
+  // Insert song/score list
   createEndScoreList();
 
+  // Show individual messages
   const endMessages = [
     ["Let’s just not talk about it", "You tried. Did you though?"],
     ["You call that fandom?"],
@@ -442,12 +449,14 @@ function showEndResult() {
       getRandomInt(endMessages[messageIndex].length - 1)
     ];
 
+  // Choose a fitting emoji
   const emoji = emojis[emojiIndex][getRandomInt(emojis[emojiIndex].length - 1)];
 
   // Set message
   endEmoji.innerText = emoji;
   finalMessage.innerText = message;
 
+  // For a perfect score create confetti effect
   if (score === trackList.length) {
     createConfetti();
   }
@@ -472,7 +481,7 @@ function createAnswers() {
   let answers = shuffle([...otherTracks]).slice(0, 4);
   // Select random track and replace it with the right answer
   answers[getRandomInt(4)] = trackList[currentRound];
-  // console.log(answers);
+  // Set song names in html
   songNames.forEach((el, index) => {
     el.textContent = answers[index].name;
     answerOptions[index].setAttribute("value", answers[index].id);
@@ -499,7 +508,7 @@ function playAudioSnippet() {
     }
   });
 }
-
+// Change appearance of play button (when playing)
 function activatePlayButton() {
   let activePlayButton = playButtons[playbacksUsed];
   // if (activePlayButton.disabled) return;
@@ -511,7 +520,7 @@ function activatePlayButton() {
       </svg>
       `;
 }
-// Disable play button
+// Disable play button (after playing)
 function disablePlayButton() {
   playButtons[playbacksUsed].classList.remove("playing");
   playButtons[playbacksUsed].toggleAttribute("disabled");
@@ -526,8 +535,11 @@ function disablePlayButton() {
   playbacksUsed++;
   playBacksLeftIndicator.innerText = 3 - playbacksUsed;
   playButtons[playbacksUsed]?.toggleAttribute("disabled");
+
+  // If disabled playbutton has focus bring focus to next
   playButtons[playbacksUsed].focus();
 }
+
 // Write percentage of audio snippet that has played into style as custom css prop --percentage
 function updatePlayPosition(percentage) {
   if (playbacksUsed > playButtons.length - 1) return;
@@ -602,7 +614,7 @@ function showResult(params) {
     "Tough luck",
   ];
 
-  //Show
+  // Update answers and add status to song card
   if (correctAnswers[currentRound]) {
     message.innerText =
       correctResponses[getRandomInt(correctResponses.length - 1)];
@@ -614,10 +626,13 @@ function showResult(params) {
     songCard.classList.remove("correct");
     songCard.classList.add("incorrect");
   }
+  // Set image and title of song card
   songCover.setAttribute("src", trackList[currentRound].album.images[0].url);
   songTitle.innerText = trackList[currentRound].name;
   hideSection(".quiz-section");
   showSection(".result-section");
+
+  // Update round variables
   currentRound++;
   roundNumber.innerText = currentRound + 1;
   currentRound === numberOfRounds
