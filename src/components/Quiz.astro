@@ -31,7 +31,7 @@
 			<p class="playback-status"><span class="playbacks-left">3</span> / 3 playbacks left</p>
 		</div>
 		<form class="answer-form">
-			<fieldset>
+			<div class="fieldset">
 				<legend>Your answer?</legend>
 				<div class="answers">
 					<div class="answer-wrapper">
@@ -59,7 +59,7 @@
 					</label>
 				</div>
 			</div>
-			</fieldset>
+			</div>
 			<button disabled class="answer-button">Final answer 
 				<svg width="100%" height="100%" class="icon large" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<path d="M4 11H16.17L10.58 5.41L12 4L20 12L12 20L10.59 18.59L16.17 13H4V11Z" fill="#181818"/>
@@ -151,10 +151,12 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
-	fieldset{
+	.fieldset{
 		max-width: var(--mw-small);
 		border:none;
 		width: 100%;
+		display: flex;
+		flex-direction: column;
 	}
 	legend {
 		font-size: 2rem;
@@ -217,7 +219,7 @@
 		.headline-wrapper{
 			display: block;
 		}
-		fieldset{
+		.fieldset{
 			max-width: 100%;
 		}
 		.answers{
