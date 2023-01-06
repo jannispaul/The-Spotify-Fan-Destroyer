@@ -1,6 +1,6 @@
 // Variables for quiz
 let accessToken;
-const numberOfRounds = 1;
+const numberOfRounds = 5;
 let trackList = [];
 let allTracks = [];
 let currentRound = 0;
@@ -63,7 +63,6 @@ function showSection(element) {
 function stringToHTML(str) {
   let parser = new DOMParser();
   let doc = parser.parseFromString(str, "text/html");
-  // console.log(doc.body.children);
   return doc.body.children[0];
 }
 
@@ -111,7 +110,6 @@ setAccessToken();
 
 // If accessToken exists continue to artist selection
 if (accessToken) {
-  // console.log("accessToken set", accessToken);
   hideSection(".login-section");
   fetchFavoriteArtists(showArtists);
   showSection(".artist-section");
@@ -209,41 +207,29 @@ const fetchTopTracks = async (id, callback) => {
 
 // Get artists albums
 async function fetchAlbums(id, callback) {
-  // console.log("fetch albums");
   const endpoint = `https://api.spotify.com/v1/artists/${id}/albums`;
   fetchJSONFromSpotify(endpoint, accessToken).then((JSON) => {
-    console.log("albums", JSON.items);
     callback(JSON.items);
-    // console.log("done with albums");
   });
 }
 
 async function iterateOverAlbumsArray(albumsArray) {
-  // console.log("iterating over albums");
   albumsArray.forEach((album) => {
-    // console.log(album.images[0].url);
-    // console.log("before fetch songs of album");
     fetchSongsOfAlbum(album.id, album.images[0].url, addTracks);
   });
 }
 
 // Fetch all song from the album, push them to allTracks, ad album cover to track
 function fetchSongsOfAlbum(id, coverURL, callback) {
-  // console.log("fetch songs of album");
   const endpoint = `https://api.spotify.com/v1/albums/${id}/tracks`;
   fetchJSONFromSpotify(endpoint, accessToken).then((JSON) => {
     JSON.items.forEach((el) => {
-      // console.log("song", el);
       allTracks.push(el);
       allTracks[allTracks.length - 1].album = { images: [{ url: coverURL }] };
-      // console.log(allTracks);
     });
-    // console.log("songsofalbum", JSON);
-    // callback(JSON.items);
   });
 }
 async function addTracks(trackArray) {
-  // console.log("allTracks", allTracks);
   allTracks.push(...trackArray);
   console.log("allTracksAdded", allTracks);
 }
@@ -283,11 +269,6 @@ function createTrackList() {
 
   // Get sub-array of first n elements after shuffled
   trackList = shuffled.slice(0, numberOfRounds);
-
-  // console.log("alltracks", allTracks);
-  // console.log("alltracksFromArtist", allTracksFromArtist);
-  // console.log("Alltracks-Noduplicates", allTracksWithoutDuplicates);
-  // console.log("tracklist", trackList);
 }
 
 // Show difficulty section
@@ -306,7 +287,6 @@ function setArtistImage(source) {
 
 // Select artist
 function selectArtist(id, name) {
-  // console.log("id:", id);
   selectedArtist.id = id;
   selectedArtist.name = name;
 }
@@ -322,7 +302,6 @@ function initiateScoreBoard() {
 }
 
 function updateScoreBoard() {
-  console.log("score:", currentRound, correctAnswers);
   // Add active class to current item
   scoreStatus[currentRound]?.classList.add("active");
   // Make sure scoreboard is not enlarged
@@ -383,7 +362,6 @@ function createEndScoreList() {
     // Turn string into HTML and append
     scoreListWrapper.append(stringToHTML(scoreListString));
   });
-  console.log(trackList);
 }
 function resetEndScoreList(params) {
   scoreListWrapper.innerHTML = "";
@@ -446,11 +424,8 @@ function showEndResult() {
       getRandomInt(endMessages[messageIndex].length - 1)
     ];
 
-  console.log(emojis[emojiIndex], emojiIndex);
-
   const emoji = emojis[emojiIndex][getRandomInt(emojis[emojiIndex].length - 1)];
 
-  console.log(emoji);
   // Set message
   endEmoji.innerText = emoji;
   finalMessage.innerText = message;
@@ -470,7 +445,6 @@ function createAnswers() {
   let otherTracks = allTracks.filter(
     (track) => track.name !== trackList[currentRound].name
   );
-  // console.log(otherTracks, trackList, trackList[currentRound]);
 
   // Create answers array with 4 random tracks
   let answers = shuffle([...otherTracks]).slice(0, 4);
@@ -480,14 +454,11 @@ function createAnswers() {
   songNames.forEach((el, index) => {
     el.textContent = answers[index].name;
     answerOptions[index].setAttribute("value", answers[index].id);
-    // console.log(answers);
-    // console.log(answers[index].name);
   });
 }
 
 // Set audio source
 function setAudioSource() {
-  // console.log("tracklist", trackList);
   audioElement.src = trackList[currentRound].preview_url; // Set resource to our URL
 }
 
@@ -563,19 +534,16 @@ function resetPlayButtons() {
 // Check if anser is correct and update score accordingly
 function checkAnswers(params) {
   let answer = answerForm.elements.namedItem("answer").value;
-  // console.log(answer);
 
   // Set answer stats
   answer === trackList[currentRound].id
     ? (correctAnswers[currentRound] = true)
     : (correctAnswers[currentRound] = false);
   updateScoreBoard();
-  // console.log(correctAnswers);
 }
 
 // Show result
 function showResult(params) {
-  // console.log(trackList[currentRound]);
   const correctResponses = [
     "You were right",
     "You weren’t bluffin...",
@@ -628,7 +596,6 @@ function showResult(params) {
   hideSection(".quiz-section");
   showSection(".result-section");
   currentRound++;
-  console.log(roundNumber);
   roundNumber.innerText = currentRound + 1;
   currentRound === numberOfRounds
     ? (nextText.textContent = "Finish")
@@ -669,7 +636,6 @@ window.addEventListener(
     }
     // Select an artist
     if (event.target.matches(".artist-button")) {
-      // console.log(event.target.dataset.id);
       selectArtist(event.target.dataset.id, event.target.dataset.name);
       setArtistName(event.target.dataset.name);
       setArtistImage(event.target.childNodes[0].src);
@@ -735,8 +701,6 @@ window.addEventListener(
         event.target
       );
     }
-
-    console.log(event);
   },
   true
 );
