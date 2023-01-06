@@ -380,7 +380,7 @@ function showEndResult() {
     ["Let’s just not talk about it", "You tried. Did you though?"],
     ["You call that fandom?"],
     ["Are you sure you’re a fan?"],
-    ['Yeah...rigth. You\'re a "fan."'],
+    ['Yeah... rigth. You\'re a "fan"'],
     ["I guess you could call that a fan!?"],
     ["Not bad!"],
     ["You are a great fan – kinda"],
