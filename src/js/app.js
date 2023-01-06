@@ -1,6 +1,6 @@
 // Variables for quiz
 let accessToken;
-const numberOfRounds = 5;
+const numberOfRounds = 1;
 let trackList = [];
 let allTracks = [];
 let currentRound = 0;
@@ -72,8 +72,18 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
 
-function copyToClipBoard(string) {
+function copyToClipBoard(string, target) {
   navigator.clipboard.writeText(string);
+
+  if (!target) return;
+  // Set a checkmark icon for 2 seconds to give user feedback
+  let originalContent = target.innerHTML;
+  target.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M8.94271 15.0573L21.3334 2.66663L23.2187 4.55196L8.94271 18.828L1.33337 11.2186L3.21871 9.33329L8.94271 15.0573Z" fill="var(--spotify)"/>
+  </svg>`;
+  setTimeout(() => {
+    target.innerHTML = originalContent;
+  }, 2000);
 }
 // End of helper functions
 
@@ -720,7 +730,10 @@ window.addEventListener(
     }
 
     if (event.target.matches("[data-name='copy-to-clipboard']")) {
-      copyToClipBoard("https://spotify-fan-destroyer.netlify.app/");
+      copyToClipBoard(
+        "https://spotify-fan-destroyer.netlify.app/",
+        event.target
+      );
     }
 
     console.log(event);
