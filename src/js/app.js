@@ -1,6 +1,6 @@
 // Variables for quiz
 let accessToken;
-const numberOfRounds = 1;
+const numberOfRounds = 5;
 let trackList = [];
 let allTracks = [];
 let currentRound = 0;
@@ -448,6 +448,10 @@ function showEndResult() {
   endEmoji.innerText = emoji;
   finalMessage.innerText = message;
 
+  if (score / trackList.length) {
+    createConfetti();
+  }
+
   hideSection(".result-section");
   showSection(".end-section");
 }
@@ -637,6 +641,46 @@ function resetQuiz(params) {
   hideSection(closeButton);
   roundNumber.innerText = "1";
   showSection(".artist-section");
+}
+
+// Create confetti
+// Code from https://github.com/catdad/canvas-confetti
+function createConfetti(params) {
+  function randomInRange(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+  let duration = 3 * 1000;
+  let animationEnd = Date.now() + duration;
+  let defaults = {
+    angle: randomInRange(90, 170),
+    startVelocity: 30,
+    spread: 360,
+    ticks: 60,
+    zIndex: 1,
+  };
+  function randomInRange(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+  let interval = setInterval(function () {
+    let timeLeft = animationEnd - Date.now();
+    if (timeLeft <= 0) {
+      return clearInterval(interval);
+    }
+    let particleCount = 50 * (timeLeft / duration);
+    // since particles fall down, start a bit higher than random
+    confetti(
+      Object.assign({}, defaults, {
+        particleCount,
+        origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+      })
+    );
+    confetti(
+      Object.assign({}, defaults, {
+        particleCount,
+        origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+      })
+    );
+  }, 250);
 }
 
 // Event listeners

@@ -50,3 +50,4 @@ Here are the exceptions and sources the code ist from. All sources are also in t
 - Fisher yates algorithm to randomly shuffle an array: https://javascript.info/array-methods#shuffle-an-array
 - Algorithm to filter an array for objects with equal properties:https://dev.to/marinamosti/removing-duplicates-in-an-array-of-objects-in-js-with-sets-3fep#comment-8hdm
 - Function to parse a string to HTML: https://gomakethings.com/converting-a-string-into-markup-with-vanilla-js/
+- Confetti effect when full points are achieved: https://github.com/catdad/canvas-confetti
