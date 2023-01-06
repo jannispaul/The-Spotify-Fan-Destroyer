@@ -709,11 +709,14 @@ window.addEventListener(
       event.target.matches(".restart-button") ||
       event.target.matches(".reset-button")
     ) {
-      resetModal.style.display = "none";
+      hideSection(resetModal);
       resetQuiz();
     }
-    if (event.target.matches(".close-modal-button")) {
-      resetModal.style.display = "none";
+    if (
+      event.target.matches(".close-modal-button") ||
+      event.target.matches(".modal-wrapper")
+    ) {
+      hideSection(resetModal);
     }
 
     if (event.target.matches("[data-name='copy-to-clipboard']")) {

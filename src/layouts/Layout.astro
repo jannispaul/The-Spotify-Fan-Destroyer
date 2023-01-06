@@ -46,6 +46,7 @@ const { title } = Astro.props;
 		--black-hover: #232323;
 		--black-selected: #272727;
 		--gray-dark: #5F5F5F;
+		--spotify: #00DA5A;
 		--side-padding: 6%;
 		--vertical-padding: 10vmin;
 		--mw-small: 20rem;
@@ -119,7 +120,8 @@ const { title } = Astro.props;
 
 	}
 
-	button:not(.spotify):not(:disabled):not(.play-button):active{
+	/* button.selector:not(.spotify):not(:disabled):not(.play-button):active{ */
+	button.selector:active{
 		border: 2px solid var(--primary);
 		background: var(--black-selected);
 	}
@@ -128,6 +130,9 @@ const { title } = Astro.props;
 		cursor: not-allowed;
 	}
 	button:hover:not(:disabled){
+		background: var(--primary-dimmed);
+	}
+	button:active:not(:disabled){
 		background: var(--primary-dimmed);
 	}
 	.icon{
@@ -181,26 +186,20 @@ const { title } = Astro.props;
 			font-size: 1.25rem;
 		}
 		h1{
-			/* font-size: 2.5rem; */
 			font-size: 6rem;
 			font-size: clamp(3rem, 10vh, 6rem);
 		}
 		.header-emoji {
 			font-size: 3rem;
 		}
-		/* h1{
-			font-size: 6rem;
-			transform: rotateZ(2deg);
-			
-		}
-		h1>span:last-of-type{
-			display: inline-block;
-			transform: rotateZ(-3deg);
-		} */
+
 		button {
 			font-size: 1.25rem;
 			height: 3.5rem;
 			width: auto;
+		}
+		button.primary:not(:disabled):active{
+			background: var(--primary);
 		}
 		.icon.large{
 			width: 2rem;
