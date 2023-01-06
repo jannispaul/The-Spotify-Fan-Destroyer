@@ -1,0 +1,66 @@
+
+<div class="error-modal-wrapper">
+<div class="error-modal">
+	<p>
+		The app could not be authorized. Your spotify email needs to be added to this app first. Please contact the admin at wicke@th-brandenburg.de 
+	</p>
+	<div class="reset-button-wrapper">
+		<button class="small close-modal-button">Discard</button>
+		<a href="mailto:wicke@th-brandenburg.de?subject=Add%20email%20to%20Spotify%20app&body=Hi%20Jannis%2C%0D%0APlease%20add%20my%20email%20to%20the%20Spotify%20Fan%20Destroyer%20app%20so%20I%20can%20test%20my%20fandom.%0D%0A%0D%0AMy%20Spotify%20account%20email%20is%3A%0D%0A%0D%0AThanks!" class="small primary contact-button button">Contact</a>
+	</div>
+</div>
+
+</div>
+
+<style>
+.error-modal-wrapper {
+	display: none;
+	width: calc(100vw);
+	height: 100vh;
+	align-items: center;
+	justify-content: center;
+	position: fixed;
+	top:0;
+	left:0;
+	z-index: 2;
+	background: rgba(0,0,0,0.5);
+	backdrop-filter: blur(20px);
+	-webkit-backdrop-filter: blur(20px);
+}	
+
+.error-modal{
+	margin: var(--side-padding);
+	border-radius: 1.25rem;
+	background: var(--black);
+	padding: 2rem;
+	max-width: calc(100vw - 2 * var(--side-padding));
+}
+
+button.close-modal-button {
+	background: none;
+	border: 2px solid var(--gray-dark);
+	color: var(--white);
+	
+}
+button.close-modal-button:hover {
+	background: var(--black-hover);
+}
+button.close-modal-button:active{
+	border-color: var(--primary);
+}
+.reset-button-wrapper{
+	margin-top: 2rem;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+	justify-content: center;
+}
+
+@media (min-width: 768px){
+	
+	.error-modal{
+		max-width: calc(2*var(--mw-small));
+
+	}
+}
+</style>

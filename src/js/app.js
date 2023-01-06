@@ -136,10 +136,13 @@ async function fetchJSONFromSpotify(endpoint) {
   };
   const response = await fetch(endpoint, requestOptions);
   if (!response.ok) {
-    console.log("response error");
+    console.log(
+      "Response error: Your email needs to be added to the spotify app. Please contact the admin at: wicke@th-brandenburg.de"
+    );
+    document.querySelector(".error-modal-wrapper").style.display = "flex";
     showSection(".login-section");
     hideSection(".artist-section");
-    const message = `An error has occured: ${response.status}. Your access token is propably expired`;
+    const message = `An error has occured: ${response.status}.`;
     throw new Error(message);
   }
 
@@ -699,9 +702,11 @@ window.addEventListener(
     }
     if (
       event.target.matches(".close-modal-button") ||
-      event.target.matches(".modal-wrapper")
+      event.target.matches(".modal-wrapper") ||
+      event.target.matches(".error-modal-wrapper")
     ) {
       hideSection(resetModal);
+      hideSection(".error-modal-wrapper");
     }
 
     if (event.target.matches("[data-name='copy-to-clipboard']")) {
