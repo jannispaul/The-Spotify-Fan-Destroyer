@@ -90,6 +90,15 @@ function copyToClipBoard(string, target) {
 function setAccessToken() {
   let urlParams = new URLSearchParams(window.location.hash.replace("#", "?"));
   accessToken = urlParams.get("access_token");
+
+  if (!accessToken) return;
+
+  // Remove hash from URL BAR
+  history.pushState(
+    "",
+    document.title,
+    window.location.pathname + window.location.search
+  );
 }
 function authorize() {
   // console.log("authorizing")
