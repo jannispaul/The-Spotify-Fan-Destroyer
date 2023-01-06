@@ -1,6 +1,6 @@
 // Variables for quiz
 let accessToken;
-const numberOfRounds = 5;
+const numberOfRounds = 1;
 let trackList = [];
 let allTracks = [];
 let currentRound = 0;
@@ -343,6 +343,7 @@ function resetScoreBoard() {
 
 // Show the quiz
 function showQuiz() {
+  // Show the quiz if there are rounds left
   if (currentRound < numberOfRounds) {
     hideSection(".result-section");
     hideSection(".difficulty-section");
@@ -352,7 +353,12 @@ function showQuiz() {
     resetPlayButtons();
     showSection(".quiz-section");
     showSection(".score-container");
-  } else {
+    playButtons[0].focus();
+    if (currentRound < 1) return;
+    playButtons[0].click();
+  }
+  // Otherwise show result
+  else {
     nextText.innerText = "Continue";
     showEndResult();
   }
@@ -516,6 +522,7 @@ function disablePlayButton() {
   playbacksUsed++;
   playBacksLeftIndicator.innerText = 3 - playbacksUsed;
   playButtons[playbacksUsed]?.toggleAttribute("disabled");
+  playButtons[playbacksUsed].focus();
 }
 // Write percentage of audio snippet that has played into style as custom css prop --percentage
 function updatePlayPosition(percentage) {
