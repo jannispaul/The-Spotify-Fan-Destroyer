@@ -1,31 +1,35 @@
 <script>
 //@ts-nocheck
 // Cover Animation	
-let mouseOverContainer = document.querySelector("body");
-let animated = document.querySelectorAll(".emoji");
+// Only run on desktop
+if (window.matchMedia('(min-width: 768px)').matches) {
+	let mouseOverContainer = document.querySelector("body");
+	let animated = document.querySelectorAll(".emoji");
 
-function transforms(x, y, el) {
-	let rotation= y/window.innerHeight * 20
-	let xShift= x/window.innerWidth * 100
-	let yShift= y/window.innerHeight * 100
-	return "rotateZ("+ rotation + "deg) translateX(" + xShift + "%) translateY(" + yShift + "%)";
-};
+	function transforms(x, y, el) {
+		let rotation= y/window.innerHeight * 20
+		let xShift= x/window.innerWidth * 100
+		let yShift= y/window.innerHeight * 100
+		return "rotateZ("+ rotation + "deg) translateX(" + xShift + "%) translateY(" + yShift + "%)";
+	};
 
-function transformElement(el, x, y) {
-	el.style.transform  = transforms(x, y, el);
-}
+	function transformElement(el, x, y) {
+		el.style.transform  = transforms(x, y, el);
+	}
 
-mouseOverContainer.onmousemove = function(e) {
-  let x = e.clientX;
-  let y = e.clientY;
 
-  window.requestAnimationFrame(function(){
-    transformElement(animated[0], -0.5*x,0.5*y);
-    transformElement(animated[1], -x,y);
-    transformElement(animated[2], 2*x,-y);
-    transformElement(animated[3], 2*y, -0.8*x);
-    transformElement(animated[4], x,0.5*y);
-  });
+	mouseOverContainer.onmousemove = function(e) {
+		let x = e.clientX;
+		let y = e.clientY;
+		
+		window.requestAnimationFrame(function(){
+			transformElement(animated[0], -0.5*x,0.5*y);
+			transformElement(animated[1], -x,y);
+			transformElement(animated[2], 2*x,-y);
+			transformElement(animated[3], 2*y, -0.8*x);
+			transformElement(animated[4], x,0.5*y);
+		});
+	};
 };
 </script>
 <div class="login-section">
@@ -93,6 +97,7 @@ mouseOverContainer.onmousemove = function(e) {
 		display: block;
 		top:calc(clamp(2rem, 12vmin, 8rem) * -1);
 		left: 50%;
+		transform: translateX(-50%);
 		font-size: clamp(2rem, 8vmin, 5rem);
 	}
 	.emoji:nth-of-type(2){
