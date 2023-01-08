@@ -610,7 +610,7 @@ function showResult(params) {
     "Nice try.",
     "Sorry, that’s not it",
     "No dice",
-    "Close, but no cigar",
+    "Close, but no",
     "Tough luck",
   ];
 
