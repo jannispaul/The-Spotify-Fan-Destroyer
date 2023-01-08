@@ -1,6 +1,6 @@
 // Variables for quiz
 let accessToken;
-const numberOfRounds = 5;
+const numberOfRounds = 1;
 let trackList = [];
 let allTracks = [];
 let currentRound = 0;
@@ -376,7 +376,9 @@ function createEndScoreList() {
     }"><img class="score-list-image" src="${
       trackList[index].album.images[0].url
     }" alt=""/><span class="score-list-title">${
-      trackList[index].name
+      trackList[index].name.length > 10
+        ? trackList[index].name.substring(0, 15) + "..."
+        : trackList[index].name
     }</span></a>`;
     // Turn string into HTML and append
     scoreListWrapper.append(stringToHTML(scoreListString));
