@@ -1,11 +1,12 @@
 
 <div class="error-modal-wrapper">
 <div class="error-modal">
+	<h2>Error</h2>
 	<p>
-		The app could not be authorized. Your spotify email needs to be added to this app first. Please contact the admin at wicke@th-brandenburg.de 
+		Please reload the page. If you continue to get this message your Spotify account email needs to be authorized first. Please contact the admin at wicke@th-brandenburg.de 
 	</p>
 	<div class="reset-button-wrapper">
-		<button class="small close-modal-button">Discard</button>
+		<button class="small close-modal-button" onclick="window.location.reload();">Reload</button>
 		<a href="mailto:wicke@th-brandenburg.de?subject=Add%20email%20to%20Spotify%20app&body=Hi%20Jannis%2C%0D%0APlease%20add%20my%20email%20to%20the%20Spotify%20Fan%20Destroyer%20app%20so%20I%20can%20test%20my%20fandom.%0D%0A%0D%0AMy%20Spotify%20account%20email%20is%3A%0D%0A%0D%0AThanks!" class="small primary contact-button button">Contact</a>
 	</div>
 </div>
@@ -34,6 +35,9 @@
 	background: var(--black);
 	padding: 2rem;
 	max-width: calc(100vw - 2 * var(--side-padding));
+}
+.error-modal p{
+	line-height: 1.5;
 }
 
 button.close-modal-button {
