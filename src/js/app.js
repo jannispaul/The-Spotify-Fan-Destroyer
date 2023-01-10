@@ -1,6 +1,6 @@
 // Variables for quiz
 let accessToken;
-const numberOfRounds = 1;
+const numberOfRounds = 5;
 let trackList = [];
 let allTracks = [];
 let currentRound = 0;
